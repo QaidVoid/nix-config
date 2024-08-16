@@ -1,0 +1,332 @@
+input {
+    keyboard {
+        xkb {
+            layout "us"
+            variant "dvorak"
+            options "ctrl:nocaps"
+        }
+
+        repeat-delay 250
+        repeat-rate 30
+
+        track-layout "global"
+    }
+
+    touchpad {
+        tap
+        // natural-scroll
+        accel-profile "flat"
+    }
+
+    mouse {
+        // natural-scroll
+        accel-profile "flat"
+    }
+
+    tablet {
+        map-to-output "eDP-1"
+    }
+
+    // By default, niri will take over the power button to make it sleep
+    // instead of power off.
+    // Uncomment this if you would like to configure the power button elsewhere
+    // (i.e. logind.conf).
+    // disable-power-key-handling
+}
+
+output "eDP-1" {
+    // off
+    scale 1.0
+    transform "normal"
+    mode "1920x1080@60"
+    position x=1920 y=0
+}
+
+layout {
+    focus-ring {
+        width 4
+        active-color 127 200 255 255
+        inactive-color 80 80 80 255
+    }
+
+    border {
+        // If you enable the border, you probably want to disable the focus ring.
+        off
+        width 4
+        active-color 255 200 127 255
+        inactive-color 80 80 80 255
+    }
+
+    preset-column-widths {
+        proportion 0.5
+        proportion 0.33333
+        proportion 0.66667
+    }
+
+    default-column-width { proportion 1.0; }
+
+    gaps 16
+
+    struts { }
+
+    // When to center a column when changing focus, options are:
+    // - "never", default behavior, focusing an off-screen column will keep at the left
+    //   or right edge of the screen.
+    // - "on-overflow", focusing a column will center it if it doesn't fit
+    //   together with the previously focused column.
+    // - "always", the focused column will always be centered.
+    center-focused-column "never"
+}
+
+spawn-at-startup "sh" "-c" "swayidle -w timeout 300 'swaylock -e -K -f -i ~/Pictures/Wallpapers/1315998.jpeg' before-sleep 'swaylock -e -K -f -i ~/Pictures/Wallpapers/1315998.jpeg'"
+spawn-at-startup "foot"
+spawn-at-startup "brightnessctl" "s" "10%"
+spawn-at-startup "sh" "-c" "swaybg -i ~/Pictures/Wallpapers/1315998.jpeg"
+spawn-at-startup "mako"
+spawn-at-startup "sh" "-c" "wlsunset -l 28.39 -L 84.12"
+
+cursor {
+    xcursor-theme "Silver"
+    xcursor-size 24
+}
+
+prefer-no-csd
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+// Animation settings.
+/-animations {
+    // Uncomment to turn off all animations.
+    // off
+
+    // Slow down all animations by this factor. Values below 1 speed them up instead.
+    // slowdown 3.0
+
+    // You can configure all individual animations.
+    // Available settings are the same for all of them.
+
+    // Animation when switching workspaces up and down,
+    // including after the touchpad gesture.
+    workspace-switch {
+        // off
+        // duration-ms 250
+        // curve "ease-out-cubic"
+    }
+
+    // All horizontal camera view movement:
+    // - When a window off-screen is focused and the camera scrolls to it.
+    // - When a new window appears off-screen and the camera scrolls to it.
+    // - When a window resizes bigger and the camera scrolls to show it in full.
+    // - And so on.
+    horizontal-view-movement {
+        // off
+        // duration-ms 250
+        // curve "ease-out-cubic"
+    }
+
+    // Window opening animation. Note that this one has different defaults.
+    window-open {
+        // off
+        // duration-ms 150
+        // curve "ease-out-expo"
+    }
+
+    // Config parse error and new default config creation notification
+    // open/close animation.
+    config-notification-open-close {
+        // off
+        // duration-ms 250
+        // curve "ease-out-cubic"
+    }
+}
+
+binds {
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    Mod+Return { spawn "foot"; }
+    Mod+D { spawn "fuzzel"; }
+    Mod+Alt+L { spawn "swaylock"; }
+
+    XF86MonBrightnessDown { spawn "brightnessctl" "set" "5%-"; }
+    XF86MonBrightnessUp { spawn "brightnessctl" "set" "5%+"; }
+
+    XF86AudioMute { spawn "$HOME/.config/niri/volume" "mute" "SINK"; }
+    XF86AudioRaiseVolume { spawn "$HOME/.config/niri/volume" "up" "SINK"; }
+    XF86AudioLowerVolume { spawn "$HOME/.config/niri/volume" "down" "SINK"; }
+
+    Mod+XF86AudioRaiseVolume { spawn "mpc" "next"; }
+    Mod+XF86AudioLowerVolume { spawn "mpc" "prev"; }
+    Mod+XF86AudioMute { spawn "mpc" "toggle"; }
+
+    Mod+S { spawn "sh" "-c" "pkill -INT -x wf-recorder || wf-recorder -a -f \"$HOME/Videos/Recordings/$(date +%Y-%m-%d_%H-%M-%S).mp4\""; }
+    Mod+Shift+S { spawn "sh" "-c" "pkill -INT -x wf-recorder || wf-recorder -g \"$(slurp)\" -a -f \"$HOME/Videos/Recordings/$(date +%Y-%m-%d_%H-%M-%S).mp4\""; }
+
+    Mod+Shift+Q { close-window; }
+
+    Mod+Left  { focus-column-left; }
+    Mod+Down  { focus-window-down; }
+    Mod+Up    { focus-window-up; }
+    Mod+Right { focus-column-right; }
+    Mod+H     { focus-column-left; }
+    Mod+J     { focus-window-down; }
+    Mod+K     { focus-window-up; }
+    Mod+L     { focus-column-right; }
+
+    Mod+Ctrl+Left  { move-column-left; }
+    Mod+Ctrl+Down  { move-window-down; }
+    Mod+Ctrl+Up    { move-window-up; }
+    Mod+Ctrl+Right { move-column-right; }
+    Mod+Ctrl+H     { move-column-left; }
+    Mod+Ctrl+J     { move-window-down; }
+    Mod+Ctrl+K     { move-window-up; }
+    Mod+Ctrl+L     { move-column-right; }
+
+    // Alternative commands that move across workspaces when reaching
+    // the first or last window in a column.
+    // Mod+J     { focus-window-or-workspace-down; }
+    // Mod+K     { focus-window-or-workspace-up; }
+    // Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
+    // Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
+
+    Mod+Home { focus-column-first; }
+    Mod+End  { focus-column-last; }
+    Mod+Ctrl+Home { move-column-to-first; }
+    Mod+Ctrl+End  { move-column-to-last; }
+
+    Mod+Shift+Left  { focus-monitor-left; }
+    Mod+Shift+Down  { focus-monitor-down; }
+    Mod+Shift+Up    { focus-monitor-up; }
+    Mod+Shift+Right { focus-monitor-right; }
+    Mod+Shift+H     { focus-monitor-left; }
+    Mod+Shift+J     { focus-monitor-down; }
+    Mod+Shift+K     { focus-monitor-up; }
+    Mod+Shift+L     { focus-monitor-right; }
+
+    Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+    Mod+Shift+Ctrl+H     { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+J     { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
+
+    // Alternatively, there are commands to move just a single window:
+    // Mod+Shift+Ctrl+Left  { move-window-to-monitor-left; }
+    // ...
+
+    // And you can also move a whole workspace to another monitor:
+    // Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
+    // ...
+
+    Mod+Page_Down      { focus-workspace-down; }
+    Mod+Page_Up        { focus-workspace-up; }
+    Mod+U              { focus-workspace-down; }
+    Mod+I              { focus-workspace-up; }
+    Mod+Ctrl+Page_Down { move-column-to-workspace-down; }
+    Mod+Ctrl+Page_Up   { move-column-to-workspace-up; }
+    Mod+Ctrl+U         { move-column-to-workspace-down; }
+    Mod+Ctrl+I         { move-column-to-workspace-up; }
+
+    // Alternatively, there are commands to move just a single window:
+    // Mod+Ctrl+Page_Down { move-window-to-workspace-down; }
+    // ...
+
+    Mod+Shift+Page_Down { move-workspace-down; }
+    Mod+Shift+Page_Up   { move-workspace-up; }
+    Mod+Shift+U         { move-workspace-down; }
+    Mod+Shift+I         { move-workspace-up; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+Ctrl+1 { move-column-to-workspace 1; }
+    Mod+Ctrl+2 { move-column-to-workspace 2; }
+    Mod+Ctrl+3 { move-column-to-workspace 3; }
+    Mod+Ctrl+4 { move-column-to-workspace 4; }
+    Mod+Ctrl+5 { move-column-to-workspace 5; }
+    Mod+Ctrl+6 { move-column-to-workspace 6; }
+    Mod+Ctrl+7 { move-column-to-workspace 7; }
+    Mod+Ctrl+8 { move-column-to-workspace 8; }
+    Mod+Ctrl+9 { move-column-to-workspace 9; }
+
+    // Alternatively, there are commands to move just a single window:
+    // Mod+Ctrl+1 { move-window-to-workspace 1; }
+
+    Mod+Comma  { consume-window-into-column; }
+    Mod+Period { expel-window-from-column; }
+
+    // There are also commands that consume or expel a single window to the side.
+    // Mod+BracketLeft  { consume-or-expel-window-left; }
+    // Mod+BracketRight { consume-or-expel-window-right; }
+
+    Mod+R { switch-preset-column-width; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+C { center-column; }
+
+    // Finer width adjustments.
+    // This command can also:
+    // * set width in pixels: "1000"
+    // * adjust width in pixels: "-5" or "+5"
+    // * set width as a percentage of screen width: "25%"
+    // * adjust width as a percentage of screen width: "-10%" or "+10%"
+    // Pixel sizes use logical, or scaled, pixels. I.e. on an output with scale 2.0,
+    // set-column-width "100" will make the column occupy 200 physical screen pixels.
+    Mod+Minus { set-column-width "-5%"; }
+    Mod+Equal { set-column-width "+5%"; }
+
+    // Finer height adjustments when in column with other windows.
+    Mod+Shift+Minus { set-window-height "-5%"; }
+    Mod+Shift+Equal { set-window-height "+5%"; }
+
+    // Actions to switch layouts.
+    // Note: if you uncomment these, make sure you do NOT have
+    // a matching layout switch hotkey configured in xkb options above.
+    // Having both at once on the same hotkey will break the switching,
+    // since it will switch twice upon pressing the hotkey (once by xkb, once by niri).
+    // Mod+Space       { switch-layout "next"; }
+    // Mod+Shift+Space { switch-layout "prev"; }
+
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+
+    Mod+Shift+E { quit; }
+    Mod+Shift+P { power-off-monitors; }
+
+    Mod+Shift+Ctrl+T { toggle-debug-tint; }
+}
+
+// Settings for debugging. Not meant for normal use.
+// These can change or stop working at any point with little notice.
+debug {
+    // Make niri take over its DBus services even if it's not running as a session.
+    // Useful for testing screen recording changes without having to relogin.
+    // The main niri instance will *not* currently take back the services; so you will
+    // need to relogin in the end.
+    // dbus-interfaces-in-non-session-instances
+
+    // Wait until every frame is done rendering before handing it over to DRM.
+    // wait-for-frame-completion-before-queueing
+
+    // Enable direct scanout into overlay planes.
+    // May cause frame drops during some animations on some hardware.
+    // enable-overlay-planes
+
+    // Disable the use of the cursor plane.
+    // The cursor will be rendered together with the rest of the frame.
+    // disable-cursor-plane
+
+    // Override the DRM device that niri will use for all rendering.
+    // render-drm-device "/dev/dri/renderD129"
+}

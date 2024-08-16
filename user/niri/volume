@@ -1,0 +1,67 @@
+#!/bin/sh
+
+current() {
+  wpctl get-volume @DEFAULT_"$1"@ | awk '{print $2*100}'
+}
+
+up() {
+  volume=$(current "$1")
+  if [[ "$volume" -lt 100 ]]; then
+    wpctl set-volume @DEFAULT_"$1"@ 0.05+
+  fi
+  notify_change "$1"
+}
+
+down() {
+  wpctl set-volume @DEFAULT_"$1"@ 0.05-
+  notify_change "$1"
+}
+
+notify_change() {
+  volume=$(current "$1")
+  if [[ "$1" == "SOURCE" ]]; then
+    if [[ "$volume" -ge "60" ]]; then
+      icon=microphone-sensitivity-high
+    elif [[ "$volume" -ge "30" ]]; then
+      icon=microphone-sensitivity-medium
+    else
+      icon=microphone-sensitivity-low
+    fi
+  else
+    if [[ "$volume" -ge "60" ]]; then
+      icon=audio-volume-high-symbolic
+    elif [[ "$volume" -ge "30" ]]; then
+      icon=audio-volume-medium-symbolic
+    else
+      icon=audio-volume-low-symbolic
+    fi
+  fi
+  notify-send "Volume" "$(current $1)" -h string:x-canonical-private-synchronous:volume --icon=$icon
+}
+
+is_muted() {
+  wpctl get-volume @DEFAULT_"$1"@ | rg -i muted
+}
+
+mute() {
+  if [[ "$1" == "SOURCE" ]]; then
+    mute_icon="microphone-sensitivity-muted"
+    unmute_icon="microphone-sensitivity-high"
+  else
+    mute_icon="audio-volume-muted-symbolic"
+    unmute_icon="audio-volume-high-symbolic"
+  fi
+
+  wpctl set-mute @DEFAULT_"$1"@ toggle
+  if [[ -n "$(is_muted $1)" ]]; then
+    notify-send "Volume" "Muted" -h string:x-canonical-private-synchronous:volume --icon="$mute_icon"
+  else
+    notify-send "Volume" "Unmuted" -h string:x-canonical-private-synchronous:volume --icon="$unmute_icon"
+  fi
+}
+
+case "$1" in
+  up) up "$2";;
+  down) down "$2";;
+  mute) mute "$2";;
+esac
