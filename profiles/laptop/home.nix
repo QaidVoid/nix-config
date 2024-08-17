@@ -7,6 +7,8 @@ in
     ../../user/shared
     ../../user/development
     ../../user/zsh
+    ../../user/mako
+    ../../user/wlsunset
   ];
 
   nixpkgs.config.allowUnfree = true;

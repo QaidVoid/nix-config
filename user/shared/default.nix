@@ -24,7 +24,6 @@ in
     fzf
     jq
     libnotify
-    mako
     mpv
     qbittorrent
     ripgrep
@@ -33,7 +32,6 @@ in
     swaylock
     tlrc
     wl-clipboard
-    wlsunset
     xdg-utils
   ];
 }

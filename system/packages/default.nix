@@ -5,6 +5,7 @@
     git
     mold
     tmux
+    papirus-icon-theme
     p7zip
   ];
 }
