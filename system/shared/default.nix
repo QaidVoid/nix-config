@@ -29,12 +29,17 @@ in
   };
 
   programs.nano.enable = false;
+  programs.neovim.enable = true;
+  programs.neovim.defaultEditor = true;
 
   hardware.graphics.enable = true;
 
   services.udisks2.enable = true;
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
 
   nix.optimise.automatic = true;
 

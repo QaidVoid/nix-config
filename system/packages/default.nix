@@ -4,7 +4,6 @@
     clang
     git
     mold
-    neovim
     tmux
     p7zip
   ];

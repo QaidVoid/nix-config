@@ -83,7 +83,7 @@ spawn-at-startup "foot"
 spawn-at-startup "brightnessctl" "s" "10%"
 spawn-at-startup "sh" "-c" "swaybg -i ~/Pictures/Wallpapers/1315998.jpeg"
 spawn-at-startup "mako"
-spawn-at-startup "sh" "-c" "wlsunset -l 28.39 -L 84.12"
+spawn-at-startup "sh" "-c" "wlsunset -T 4005"
 
 cursor {
     xcursor-theme "Silver"
@@ -153,9 +153,9 @@ binds {
     XF86MonBrightnessDown { spawn "brightnessctl" "set" "5%-"; }
     XF86MonBrightnessUp { spawn "brightnessctl" "set" "5%+"; }
 
-    XF86AudioMute { spawn "$HOME/.config/niri/volume" "mute" "SINK"; }
-    XF86AudioRaiseVolume { spawn "$HOME/.config/niri/volume" "up" "SINK"; }
-    XF86AudioLowerVolume { spawn "$HOME/.config/niri/volume" "down" "SINK"; }
+    XF86AudioMute { spawn "~/.config/niri/volume" "mute" "SINK"; }
+    XF86AudioRaiseVolume { spawn "~/.config/niri/volume" "up" "SINK"; }
+    XF86AudioLowerVolume { spawn "~/.config/niri/volume" "down" "SINK"; }
 
     Mod+XF86AudioRaiseVolume { spawn "mpc" "next"; }
     Mod+XF86AudioLowerVolume { spawn "mpc" "prev"; }
