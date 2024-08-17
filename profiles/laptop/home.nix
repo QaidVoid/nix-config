@@ -9,6 +9,7 @@ in
     ../../user/zsh
     ../../user/mako
     ../../user/wlsunset
+    ../../user/yazi
   ];
 
   nixpkgs.config.allowUnfree = true;
