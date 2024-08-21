@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -6,6 +6,7 @@
     ../../system/hardware/bluetooth.nix
     ../../system/hardware/wifi.nix
     ../../system/packages
+    ../../system/packages/vaultwarden.nix
     ../../system/packages/docker.nix
     ../../system/security/doas.nix
     ../../system/security/gpg.nix
@@ -18,4 +19,10 @@
   ];
 
   services.libinput.enable = true;
+  services.postgresql = {
+    enable = true;
+    authentication = pkgs.lib.mkOverride 10 ''
+      local all       all     trust
+    '';
+  };
 }

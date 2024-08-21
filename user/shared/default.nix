@@ -13,6 +13,7 @@ in
   home.packages = with pkgs; [
     bat
     btop
+    cloudflare-warp
     delta
     eww
     eza
@@ -22,6 +23,7 @@ in
     foot
     fuzzel
     fzf
+    imv
     jq
     libnotify
     mpv
@@ -33,5 +35,6 @@ in
     tlrc
     wl-clipboard
     xdg-utils
+    yt-dlp
   ];
 }

@@ -7,5 +7,6 @@
     tmux
     papirus-icon-theme
     p7zip
+    wireguard-tools
   ];
 }
