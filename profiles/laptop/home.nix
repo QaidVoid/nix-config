@@ -22,7 +22,6 @@ in
   home.packages = with pkgs; [
     chromium
     niri
-    protonvpn-gui
     telegram-desktop
     tree
     typst

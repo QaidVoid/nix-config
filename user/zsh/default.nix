@@ -14,7 +14,16 @@
 
     shellAliases = {
       cat = "bat";
-      ls = "eza";
     };
+
+    initExtra = ''
+      bindkey -v
+      export KEYTIMEOUT=1
+    '';
+  };
+
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
   };
 }

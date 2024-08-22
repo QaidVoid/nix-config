@@ -3,6 +3,16 @@ let
   options = import (./. + "/../../options.nix");
 in
 {
+  imports = [
+    ./cli.nix
+  ];
+
+  services.gpg-agent = {
+    enable = true;
+    defaultCacheTtl = 1800;
+    enableSshSupport = true;
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   home.username = options.username;
