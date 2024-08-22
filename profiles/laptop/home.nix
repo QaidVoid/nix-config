@@ -6,6 +6,7 @@ in
   imports = [
     ../../user/shared
     ../../user/development
+    ../../user/git
     ../../user/zsh
     ../../user/mako
     ../../user/wlsunset

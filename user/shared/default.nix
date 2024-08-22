@@ -22,6 +22,7 @@ in
 
   home.packages = with pkgs; [
     bat
+    brightnessctl
     btop
     cloudflare-warp
     delta
