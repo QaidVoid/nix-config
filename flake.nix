@@ -11,23 +11,25 @@
 
   outputs = { self, nixpkgs, home-manager, ... }:
   let
-    options = import (./. + "/options.nix");
-    system = options.system;
+    opts = import (./. + "/options.nix");
+    system = opts.system;
     pkgs = nixpkgs.legacyPackages.${system};
   in {
     nixosConfigurations = {
-      ${options.hostname} = nixpkgs.lib.nixosSystem {
+      ${opts.hostname} = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = { inherit opts; };
         modules = [
-            (./. + "/profiles" + ("/" + options.profile))
+            (./. + "/profiles" + ("/" + opts.profile) + "/configuration.nix")
           ];
       };
     };
     homeConfigurations = {
-      ${options.username} = home-manager.lib.homeManagerConfiguration {
+      ${opts.username} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = { inherit opts; };
         modules = [
-            (./. + "/profiles" + ("/" + options.profile) + "/home.nix")
+            (./. + "/profiles" + ("/" + opts.profile) + "/home.nix")
           ];
       };
     };

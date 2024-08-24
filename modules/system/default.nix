@@ -1,8 +1,17 @@
-{ pkgs, ... }:
-let
-  options = import (./. + "/../../options.nix");
-in
+{ pkgs, opts, ... }:
 {
+  imports = [
+    ./dbus.nix
+    ./fonts.nix
+    ./packages.nix
+    ./pipewire.nix
+    ./ssh.nix
+    ./swaylock.nix
+    ./vaultwarden.nix
+    ./virtualisation.nix
+    ./wireless.nix
+  ];
+
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
   zramSwap.enable = true;
@@ -12,18 +21,18 @@ in
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  networking.hostName = options.hostname;
+  networking.hostName = opts.hostname;
 
-  time.timeZone = options.timezone;
+  time.timeZone = opts.timezone;
 
   i18n.defaultLocale = "en_US.UTF-8";
 
   console = {
     earlySetup = true;
-    keyMap = options.keymap;
+    keyMap = opts.keymap;
   };
 
-  users.users.${options.username} = {
+  users.users.${opts.username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "input" "video" ];
   };
@@ -31,6 +40,18 @@ in
   programs.nano.enable = false;
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
+
+  security.doas.enable = true;
+  security.sudo.enable = false;
+  security.doas.extraRules = [{
+    groups = [ "wheel" ];
+    persist = true;
+    keepEnv = true;
+  }];
+
+  environment.systemPackages = [
+    (pkgs.writeScriptBin "sudo" ''exec doas "$@"'')
+  ];
 
   hardware.graphics.enable = true;
 

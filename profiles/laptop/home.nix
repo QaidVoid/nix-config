@@ -1,28 +1,15 @@
 { pkgs, ... }:
-let
-  options = import (./. + "/../../options.nix");
-in
 {
   imports = [
-    ../../user/shared
-    ../../user/development
-    ../../user/git
-    ../../user/zsh
-    ../../user/mako
-    ../../user/wlsunset
-    ../../user/yazi
+    ../../modules/user
   ];
 
-  nixpkgs.config.allowUnfree = true;
-
-  home.username = options.username;
-  home.homeDirectory = "/home/" + options.username;
-
-  home.stateVersion = "24.05";
+  development.enable = true;
+  niri.enable = true;
 
   home.packages = with pkgs; [
+    affine
     chromium
-    niri
     telegram-desktop
     tree
     typst
@@ -32,10 +19,7 @@ in
   ];
 
   home.file = {
-    ".config/foot".source = ../../user/foot;
-    ".config/niri".source = ../../user/niri;
+    ".config/foot".source = ../../dotfiles/foot;
+    ".config/niri".source = ../../dotfiles/niri;
   };
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 }
