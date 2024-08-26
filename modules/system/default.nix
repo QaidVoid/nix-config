@@ -1,4 +1,4 @@
-{ pkgs, opts, ... }:
+{ lib, pkgs, opts, ... }:
 {
   imports = [
     ./dbus.nix
@@ -12,7 +12,7 @@
     ./wireless.nix
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_zen;
 
   zramSwap.enable = true;
 
