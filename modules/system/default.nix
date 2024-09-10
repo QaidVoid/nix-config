@@ -14,7 +14,10 @@
 
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_zen;
 
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    memoryPercent = 75;
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -59,8 +62,16 @@
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
+  programs.fish.enable = true;
+  programs.bash = {
+    interactiveShellInit = ''
+      if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+      then
+        shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
+        exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
+      fi
+    '';
+  };
 
   nix.optimise.automatic = true;
 

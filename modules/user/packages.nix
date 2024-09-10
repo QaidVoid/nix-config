@@ -10,7 +10,6 @@
     eza
     fastfetch
     fd
-    firefox
     foot
     fuzzel
     fzf

@@ -39,7 +39,7 @@ output "eDP-1" {
     scale 1.0
     transform "normal"
     mode "1920x1080@60"
-    position x=1920 y=0
+    position x=0 y=0
 }
 
 layout {
@@ -82,6 +82,10 @@ spawn-at-startup "sh" "-c" "swayidle -w timeout 300 'swaylock -e -K -f -i ~/Pict
 spawn-at-startup "foot"
 spawn-at-startup "brightnessctl" "s" "10%"
 spawn-at-startup "sh" "-c" "swaybg -i ~/Pictures/Wallpapers/1315998.jpeg"
+
+environment {
+  DISPLAY ":0"
+}
 
 cursor {
     xcursor-theme "Silver"

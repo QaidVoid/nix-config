@@ -1,15 +1,17 @@
 { ... }:
 {
   imports = [
+    ./fish.nix
     ./git.nix
     ./niri.nix
     ./yazi.nix
     ./zsh.nix
   ];
 
+  fish.enable = true;
   git.enable = true;
   yazi.enable = true;
-  zsh.enable = true;
+  zsh.enable = false;
 
   programs.eza = {
     enable = true;
