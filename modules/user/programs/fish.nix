@@ -13,7 +13,7 @@
       interactiveShellInit = ''
         set fish_greeting;
         set -g fish_key_bindings fish_vi_key_bindings
-        
+
         function nixify
           if not test -e ./.envrc
             echo "use nix" > .envrc
@@ -22,11 +22,11 @@
 
           if not test -e shell.nix -a -e default.nix
             echo "with import <nixpkgs> {}; 
-        mkShell {
-          nativeBuildInputs = [
-            bashInteractive
-          ];
-        }" > default.nix
+              mkShell {
+                nativeBuildInputs = [
+                  bashInteractive
+                ];
+              }" > default.nix
             $EDITOR default.nix
           end
         end
@@ -44,7 +44,6 @@
       '';
       plugins = [
         { name = "autopair"; src = pkgs.fishPlugins.autopair.src; }
-        { name = "hydro"; src = pkgs.fishPlugins.hydro.src; }
         { name = "forgit"; src = pkgs.fishPlugins.forgit.src; }
       ];
     };

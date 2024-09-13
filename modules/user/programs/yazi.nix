@@ -7,7 +7,7 @@
   config = lib.mkIf config.yazi.enable {
     programs.yazi = {
       enable = true;
-      enableZshIntegration = true;
+      enableFishIntegration = true;
       theme = {
         manager = {
           cwd = { fg = "#94e2d5"; };

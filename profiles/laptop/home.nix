@@ -1,5 +1,8 @@
-{ pkgs, ... }:
-{
+{ pkgs, config, ... }:
+let
+  configdir = "${config.home.homeDirectory}/nix-config";
+  sym = config.lib.file.mkOutOfStoreSymlink;
+in {
   imports = [
     ../../modules/user
   ];
@@ -31,7 +34,7 @@
   ];
 
   home.file = {
-    ".config/foot".source = ../../dotfiles/foot;
-    ".config/niri".source = ../../dotfiles/niri;
+    ".config/foot".source = sym "${configdir}/dotfiles/foot";
+    ".config/niri".source = sym "${configdir}/dotfiles/niri";
   };
 }

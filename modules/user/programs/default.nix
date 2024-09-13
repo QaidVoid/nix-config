@@ -13,15 +13,14 @@
   yazi.enable = true;
   zsh.enable = false;
 
+  programs.bat.enable = true;
+
   programs.eza = {
     enable = true;
     icons = true;
     git = true;
-    enableZshIntegration = true;
   };
 
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
+  programs.fzf.enable = true;
+  programs.starship.enable = true;
 }
