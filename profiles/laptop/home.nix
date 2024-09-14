@@ -10,6 +10,8 @@ in {
   development.enable = true;
   niri.enable = true;
   direnv.enable = true;
+  swaylock.enable = true;
+  swayidle.enable = true;
 
   programs.firefox = {
     enable = true;

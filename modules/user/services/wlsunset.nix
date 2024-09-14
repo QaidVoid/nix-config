@@ -1,10 +1,10 @@
 { lib, config, ... }:
 {
   options = {
-    wlsunset.enable = lib.mkEnableOption "Enable wlsunset notification service";
+    wlsunset.enable = lib.mkEnableOption "Enable wlsunset service";
   };
 
-  config = lib.mkIf config.mako.enable {
+  config = lib.mkIf config.wlsunset.enable {
     services.wlsunset = {
       enable = true;
       latitude = 28.39;
@@ -13,6 +13,10 @@
         day = 4500;
         night = 4000;
       };
+    };
+
+    systemd.user.services.wlsunset = {
+      Unit.After = [ "niri.service" ];
     };
   };
 }

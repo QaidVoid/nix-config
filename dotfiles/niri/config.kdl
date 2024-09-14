@@ -78,10 +78,8 @@ layout {
     center-focused-column "never"
 }
 
-spawn-at-startup "sh" "-c" "swayidle -w timeout 300 'swaylock -e -K -f -i ~/Pictures/Wallpapers/1315998.jpeg' before-sleep 'swaylock -e -K -f -i ~/Pictures/Wallpapers/1315998.jpeg'"
-spawn-at-startup "foot"
-spawn-at-startup "brightnessctl" "s" "10%"
-spawn-at-startup "sh" "-c" "swaybg -i ~/Pictures/Wallpapers/1315998.jpeg"
+spawn-at-startup "brightnessctl" "s" "20%"
+spawn-at-startup "sh" "-c" "swaybg -i ~/Pictures/Wallpapers/default.png"
 
 environment {
   DISPLAY ":0"

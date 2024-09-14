@@ -6,6 +6,7 @@
     ./niri.nix
     ./yazi.nix
     ./zsh.nix
+    ./wl-utils.nix
   ];
 
   fish.enable = true;

@@ -19,8 +19,6 @@
     qbittorrent
     ripgrep
     swaybg
-    swayidle
-    swaylock
     tlrc
     wl-clipboard
     xdg-utils

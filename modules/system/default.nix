@@ -75,5 +75,11 @@
 
   nix.optimise.automatic = true;
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+
   system.stateVersion = "24.05";
 }
