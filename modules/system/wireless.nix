@@ -14,8 +14,8 @@
     (lib.mkIf config.wifi.enable {
       networking.wireless = {
         enable = true;
-        environmentFile = "/root/secrets/wireless.env";
-        networks."@SSID@".psk = "@PSK@";
+        secretsFile = "/root/secrets/wireless.env";
+        networks.redacted.pskRaw = "ext:home_psk";
       };
     })
   ];

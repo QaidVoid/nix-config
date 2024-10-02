@@ -24,6 +24,7 @@ in {
 
   home.packages = with pkgs; [
     affine
+    ani-cli
     chromium
     qutebrowser
     telegram-desktop

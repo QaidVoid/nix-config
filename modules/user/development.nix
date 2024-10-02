@@ -24,9 +24,11 @@
         clang-tools
         go
         gopls
+        jujutsu
         lua-language-server
-        nil
+        nixd
         omnisharp-roslyn
+        php
         rustup
         taplo
         zig

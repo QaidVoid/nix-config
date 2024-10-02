@@ -18,6 +18,7 @@
     mpv
     qbittorrent
     ripgrep
+    sway
     swaybg
     tlrc
     wl-clipboard

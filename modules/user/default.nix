@@ -3,6 +3,7 @@
   imports = [
     ./development.nix
     ./packages.nix
+    ./theme.nix
     ./programs
     ./services
   ];
