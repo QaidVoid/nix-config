@@ -12,11 +12,21 @@
     ./wireless.nix
   ];
 
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_zen;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+
+  nix.settings.trusted-users = [ "root" "qaidvoid" ];
+  boot.supportedFilesystems = [ "ntfs" ];
 
   zramSwap = {
     enable = true;
-    memoryPercent = 75;
+    memoryPercent = 100;
+  };
+
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 180;
+    "vm.watermark_boost_factor" = 0;
+    "vm.watermark_scale_factor" = 125;
+    "vm.page-cluster" = 0;
   };
 
   boot.loader.systemd-boot.enable = true;
@@ -44,6 +54,8 @@
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
 
+  programs.dconf.enable = true;
+
   security.doas.enable = true;
   security.sudo.enable = false;
   security.doas.extraRules = [{
@@ -62,16 +74,18 @@
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  programs.fish.enable = true;
-  programs.bash = {
-    interactiveShellInit = ''
-      if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
-      then
-        shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
-        exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
-      fi
-    '';
-  };
+  environment.shells = with pkgs; [ nushell fish ];
+
+  users.defaultUserShell = pkgs.nushell;
+  # programs.bash = {
+  #   interactiveShellInit = ''
+  #     if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
+  #     then
+  #       shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
+  #       exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
+  #     fi
+  #   '';
+  # };
 
   nix.optimise.automatic = true;
 
@@ -79,6 +93,12 @@
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 7d";
+  };
+
+  services.earlyoom = {
+      enable = true;
+      enableNotifications = true;
+      extraArgs = [ "-g" "--avoid" "(^|/)(vesktop|firefox|niri)$" ];
   };
 
   system.stateVersion = "24.05";

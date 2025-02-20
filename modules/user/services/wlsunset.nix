@@ -10,7 +10,7 @@
       latitude = 28.39;
       longitude = 84.12;
       temperature = {
-        day = 4500;
+        day = 6000;
         night = 4000;
       };
     };

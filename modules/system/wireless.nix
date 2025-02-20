@@ -12,10 +12,16 @@
     })
 
     (lib.mkIf config.wifi.enable {
-      networking.wireless = {
+      networking.wireless.iwd = {
         enable = true;
-        secretsFile = "/root/secrets/wireless.env";
-        networks.redacted.pskRaw = "ext:home_psk";
+        settings = {
+          IPv6 = {
+            Enabled = true;
+          };
+          Settings = {
+            AutoConnect = true;
+          };
+        };
       };
     })
   ];

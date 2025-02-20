@@ -34,16 +34,18 @@
 
   services.libinput.enable = true;
 
+  users.groups.plugdev = {};
   environment.systemPackages = with pkgs; [
     android-tools
   ];
 
-  networking.firewall.allowedTCPPorts = [ 2222 ];
+  networking.firewall.allowedTCPPorts = [ 2222 4000 5173 4000 1025 8025 8081 ];
+  virtualisation.waydroid.enable = true;
 
-  services.postgresql = {
+  programs.appimage = {
     enable = true;
-    authentication = pkgs.lib.mkOverride 10 ''
-      local all       all     trust
-    '';
+    binfmt = true;
   };
+
+  programs.firejail.enable = true;
 }

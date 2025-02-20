@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
+    acpi
     clang
     ffmpeg
     git
@@ -11,4 +12,12 @@
     qemu
     wireguard-tools
   ];
+
+  services.redis.servers."".enable = true;
+  services.minio = {
+    enable = true;
+    browser = true;
+    secretKey = "homesecretkey";
+    accessKey = "homeaccesskey";
+  };
 }

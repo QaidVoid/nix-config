@@ -1,6 +1,7 @@
-{ opts, ... }:
+{ opts, lib, ... }:
 {
   imports = [
+    ./config.nix
     ./development.nix
     ./packages.nix
     ./theme.nix

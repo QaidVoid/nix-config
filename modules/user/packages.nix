@@ -1,28 +1,31 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
+    catppuccin-gtk
     brightnessctl
     btop
-    cloudflare-warp
     delta
     eww
     eza
     fastfetch
     fd
-    foot
     fuzzel
     fzf
+    glib
     imv
     jq
     libnotify
-    mpv
     qbittorrent
     ripgrep
-    sway
     swaybg
     tlrc
     wl-clipboard
     xdg-utils
     yt-dlp
   ];
+
+  xdg.desktopEntries.btop = {
+    name = "btop";
+    noDisplay = true;
+  };
 }

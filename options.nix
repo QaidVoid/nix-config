@@ -8,4 +8,9 @@
 
   # USER
   username = "qaidvoid";
+
+  theme = {
+    name = "catppuccinMocha";
+    dark = true;
+  };
 }

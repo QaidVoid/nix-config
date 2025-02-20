@@ -3,6 +3,6 @@
   fonts.packages = with pkgs; [
     noto-fonts
     jetbrains-mono
-    (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly"]; })
+    nerd-fonts.symbols-only
   ];
 }

@@ -13,6 +13,7 @@
         bun
         emmet-language-server
         marksman
+        mailpit
         nodejs
         pnpm
         sqls
@@ -22,6 +23,8 @@
         vscode-langservers-extracted
 
         clang-tools
+        blade-formatter
+        laravel
         go
         gopls
         jujutsu
@@ -29,6 +32,8 @@
         nixd
         omnisharp-roslyn
         php
+        phpactor
+        phpPackages.composer
         rustup
         taplo
         zig

@@ -16,19 +16,19 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/2a23c887-f31a-40b0-8510-aa6083634427";
       fsType = "btrfs";
-      options = [ "subvol=nixos" ];
+      options = [ "compress=zstd" "noatime" "subvol=nixos" ];
     };
 
   fileSystems."/home" =
     { device = "/dev/disk/by-uuid/2a23c887-f31a-40b0-8510-aa6083634427";
       fsType = "btrfs";
-      options = [ "subvol=home" ];
+      options = [ "compress=zstd" "subvol=home" ];
     };
 
   boot.initrd.luks.devices."luks".device = "/dev/disk/by-uuid/82f28426-eab3-47eb-a115-c9c7f755edfe";
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/61C5-EAA5";
+    { device = "/dev/disk/by-uuid/3556-88DA";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
