@@ -1,0 +1,41 @@
+{ pkgs, inputs, ... }:
+{
+  environment.systemPackages = with pkgs; [
+    android-tools
+    bat
+    btop
+    clang
+    ddcutil
+    delta
+    distrobox
+    fastfetch
+    fd
+    ffmpeg
+    file
+    gcc
+    git
+    glib
+    gnumake
+    go
+    helix
+    jq
+    jujutsu
+    libgcc
+    mold
+    nix-output-monitor
+    inputs.neovim-nightly.packages.${pkgs.system}.default
+    openssl
+    p7zip-rar
+    podman-compose
+    podman-tui
+    ripgrep
+    skim
+    sops
+    tmux
+    unzip
+    xdg-utils
+    wl-clipboard
+    zig_0_15
+    (pkgs.writeShellScriptBin "sudo" "doas $@")
+  ];
+}
