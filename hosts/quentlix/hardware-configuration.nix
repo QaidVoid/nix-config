@@ -1,9 +1,11 @@
-{ config, lib, ... }:
+{ config, lib, modulesPath, ... }:
 {
-  imports = [];
+  imports =
+  [ (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-amd" ];
 
   fileSystems."/" =
