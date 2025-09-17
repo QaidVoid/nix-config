@@ -8,6 +8,7 @@
     ddcutil
     delta
     distrobox
+    dix
     fastfetch
     fd
     ffmpeg
@@ -20,6 +21,7 @@
     helix
     jq
     jujutsu
+    just
     libgcc
     mold
     nix-output-monitor
