@@ -19,6 +19,8 @@
     "p7zip"
   ];
 
+  boot.tmp.cleanOnBoot = true;
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
@@ -61,10 +63,10 @@
   };
 
   hardware.graphics.enable = true;
-  environment.shells = with pkgs; [ nushell fish ];
+  environment.shells = with pkgs; [ fish ];
 
   programs.fish.enable = true;
-  users.defaultUserShell = pkgs.nushell;
+  users.defaultUserShell = pkgs.fish;
 
   hardware.bluetooth = {
     enable = true;

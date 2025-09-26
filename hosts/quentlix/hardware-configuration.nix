@@ -17,7 +17,7 @@
   fileSystems."/home" =
     { device = "/dev/mapper/luks-782eca9f-2f9e-4d2c-97a3-e8efc9b78853";
       fsType = "btrfs";
-      options = [ "compress=zstd" "subvol=home" ];
+      options = [ "compress=zstd" "noatime" "subvol=home" ];
     };
 
   fileSystems."/boot" =

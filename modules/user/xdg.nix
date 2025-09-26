@@ -1,4 +1,11 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
+let
+  noDesktopEntries = names:
+    lib.genAttrs names (name: {
+      inherit name;
+      noDisplay = true;
+    });
+in
 {
   xdg.portal = {
     enable = true;
@@ -8,30 +15,12 @@
     config.common.default = [ "gnome" ];
   };
 
-  xdg.desktopEntries = {
-    btop = {
-      name = "btop";
-      noDisplay = true;
-    };
-    fish = {
-      name = "fish";
-      noDisplay = true;
-    };
-    helix = {
-      name = "helix";
-      noDisplay = true;
-    };
-    mpv = {
-      name = "mpv";
-      noDisplay = true;
-    };
-    nixos-manual = {
-      name = "nixos-manual";
-      noDisplay = true;
-    };
-    nvim = {
-      name = "nvim";
-      noDisplay = true;
-    };
-  };
+  xdg.desktopEntries = noDesktopEntries [
+    "btop"
+    "fish"
+    "Helix"
+    "mpv"
+    "nixos-manual"
+    "nvim"
+  ];
 }

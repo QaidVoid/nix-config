@@ -1,19 +1,23 @@
-set shell := ["nu", "-c"]
 hostname := `hostname`
+prev_system := `realpath /run/current-system`
+prev_home := `realpath ~/.local/state/nix/profiles/home-manager`
 
 default:
   @just --list
 
 [group('nix')]
 switch:
-  let prev = (realpath /run/current-system); \
-  echo $prev; \
-  nixos-rebuild build --flake .#{{hostname}} o+e>| nom; \
-  doas ./result/activate; \
-  dix $prev /run/current-system
+  nixos-rebuild build --flake .#{{hostname}} |& nom
+  doas nixos-rebuild switch --flake .#{{hostname}}
+  dix {{prev_system}} /run/current-system
 
 [group('nix')]
 home:
-  let prev = (realpath ~/.local/state/nix/profiles/home-manager); \
-  home-manager switch --flake .#{{hostname}} o+e>| nom; \
-  dix $prev ~/.local/state/nix/profiles/home-manager
+  home-manager switch --flake .#{{hostname}} |& nom
+  dix {{prev_home}} ~/.local/state/nix/profiles/home-manager
+
+[group('nix')]
+update:
+  nix flake update
+  @just switch
+  @just home

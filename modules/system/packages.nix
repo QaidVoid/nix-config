@@ -9,6 +9,7 @@
     delta
     distrobox
     dix
+    eza
     fastfetch
     fd
     ffmpeg
