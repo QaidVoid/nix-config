@@ -5,6 +5,7 @@
     bat
     btop
     clang
+    clang-tools
     ddcutil
     delta
     distrobox
@@ -26,7 +27,6 @@
     libgcc
     mold
     nix-output-monitor
-    inputs.neovim-nightly.packages.${pkgs.system}.default
     openssl
     p7zip-rar
     podman-compose
@@ -41,4 +41,10 @@
     zig_0_15
     (pkgs.writeShellScriptBin "sudo" "doas $@")
   ];
+
+  programs.neovim = {
+    enable = true;
+    package = inputs.neovim-nightly.packages.${pkgs.system}.default;
+    defaultEditor = true;
+  };
 }

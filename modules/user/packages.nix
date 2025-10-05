@@ -2,9 +2,11 @@
 {
   home.packages = with pkgs; [
     ani-cli
+    aseprite
     b3sum
     biome
     brave
+    blender
     bun
     burpsuite
     cargo-edit
@@ -16,10 +18,15 @@
     dua
     firefox-devedition
     fish
+    gimp
+    godot
     github-cli
     harper
     heroic
     hydra-check
+    imagemagick
+    just-formatter
+    just-lsp
     (localstack.override {
       python3 = python3.override {
         packageOverrides = self: super: {
@@ -74,15 +81,7 @@
   ];
 
   programs.obs-studio.enable = true;
-
-  programs.fuzzel = {
-    enable = true;
-    settings = {
-      main = {
-        layer = "overlay";
-      };
-    };
-  };
+  programs.fuzzel.enable = true;
 
   programs.starship = {
     enable = true;
