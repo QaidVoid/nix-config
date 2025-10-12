@@ -25,6 +25,7 @@
     heroic
     hydra-check
     imagemagick
+    inkscape
     just-formatter
     just-lsp
     (localstack.override {
@@ -62,6 +63,7 @@
     swayimg
     swaylock
     telegram-desktop
+    tiled
     tridactyl-native
     typescript
     typescript-language-server
@@ -75,6 +77,7 @@
     xwayland-satellite
     wf-recorder
     yt-dlp
+    zathura
     zed-editor
     zoxide
     zls_0_15
