@@ -13,34 +13,46 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { home-manager, nixpkgs, ... }@inputs:
-  let
-    system = "x86_64-linux";
-    hosts = [ "quentlix" "zenlix" ];
-
-    # Function to generate a NixOS configuration for a host
-    mkNixosSystem = hostName: nixpkgs.lib.nixosSystem {
-      inherit system;
-      specialArgs = { inherit inputs; };
-      modules = [
-        inputs.catppuccin.nixosModules.catppuccin
-        inputs.sops-nix.nixosModules.sops
-        ./hosts/${hostName}
+  outputs =
+    { home-manager, nixpkgs, ... }@inputs:
+    let
+      system = "x86_64-linux";
+      hosts = [
+        "quentlix"
+        "zenlix"
       ];
-    };
 
-    # Function to generate a Home Manager configuration for a host
-    mkHomeConfiguration = hostName: home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.${system};
-      extraSpecialArgs = { inherit inputs; };
-      modules = [ ./hosts/${hostName}/home.nix ];
-    };
+      # Function to generate a NixOS configuration for a host
+      mkNixosSystem =
+        hostName:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = [
+            inputs.catppuccin.nixosModules.catppuccin
+            inputs.sops-nix.nixosModules.sops
+            ./hosts/${hostName}
+          ];
+        };
 
-  in
-  {
-    nixosConfigurations = nixpkgs.lib.genAttrs hosts mkNixosSystem;
-    homeConfigurations = nixpkgs.lib.genAttrs hosts (hostName: mkHomeConfiguration hostName);
-  };
+      # Function to generate a Home Manager configuration for a host
+      mkHomeConfiguration =
+        hostName:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          extraSpecialArgs = { inherit inputs; };
+          modules = [ ./hosts/${hostName}/home.nix ];
+        };
+
+    in
+    {
+      nixosConfigurations = nixpkgs.lib.genAttrs hosts mkNixosSystem;
+      homeConfigurations = nixpkgs.lib.genAttrs hosts (hostName: mkHomeConfiguration hostName);
+    };
 }
