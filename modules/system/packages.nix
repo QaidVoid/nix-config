@@ -1,5 +1,8 @@
 { pkgs, inputs, ... }:
 {
+  nixpkgs.overlays = [
+    inputs.niri.overlays.niri
+  ];
   environment.systemPackages = with pkgs; [
     android-tools
     bat
@@ -26,6 +29,7 @@
     just
     libgcc
     mold
+    niri-unstable
     nix-output-monitor
     openssl
     p7zip-rar

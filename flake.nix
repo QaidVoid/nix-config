@@ -9,6 +9,7 @@
     };
     catppuccin.url = "github:catppuccin/nix";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+    niri.url = "github:sodiboo/niri-flake";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
