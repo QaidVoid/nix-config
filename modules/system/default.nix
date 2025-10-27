@@ -59,7 +59,6 @@
     };
     sudo.enable = false;
     polkit.enable = true;
-    pam.services.swaylock = {};
   };
 
   hardware.graphics.enable = true;

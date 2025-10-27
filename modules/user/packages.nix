@@ -16,7 +16,6 @@
     cmake
     dig
     dua
-    eww
     firefox-devedition
     fish
     gimp
@@ -58,10 +57,6 @@
     slurp
     steel
     stylua
-    swaybg
-    swayidle
-    swayimg
-    swaylock
     telegram-desktop
     tiled
     tridactyl-native

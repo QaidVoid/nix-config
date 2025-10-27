@@ -1,9 +1,9 @@
 { lib, ... }:
 {
   imports = [
+    ./dms.nix
     ./mpv.nix
     ./packages.nix
-    ./swayidle.nix
     ./theme.nix
     ./xdg.nix
     ./zen.nix
