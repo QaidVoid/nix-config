@@ -40,7 +40,6 @@
       };
     })
     lua-language-server
-    mako
     mdbook
     nautilus
     nixd
@@ -79,7 +78,6 @@
   ];
 
   programs.obs-studio.enable = true;
-  programs.fuzzel.enable = true;
 
   programs.starship = {
     enable = true;
@@ -96,6 +94,4 @@
     enable = true;
     enableFishIntegration = true;
   };
-
-  services.mako.enable = true;
 }
