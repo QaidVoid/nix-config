@@ -7,6 +7,7 @@
     biome
     brave
     blender
+    blobdrop
     bun
     burpsuite
     cargo-edit
@@ -56,6 +57,7 @@
     slurp
     steel
     stylua
+    svelte-language-server
     telegram-desktop
     tiled
     tridactyl-native

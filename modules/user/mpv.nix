@@ -3,7 +3,7 @@
   programs.mpv = {
     enable = true;
     scripts = with pkgs; [
-      # mpvScripts.autosub
+      mpvScripts.autosub
       mpvScripts.autosubsync-mpv
       mpvScripts.smartskip
       mpvScripts.sponsorblock-minimal

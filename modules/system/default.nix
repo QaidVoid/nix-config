@@ -11,17 +11,22 @@
     ./vaultwarden.nix
   ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "nvidia-x11"
-    "nvidia-settings"
-    "steam"
-    "steam-unwrapped"
-    "p7zip"
-  ];
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "nvidia-x11"
+      "nvidia-settings"
+      "steam"
+      "steam-unwrapped"
+      "p7zip"
+    ];
 
   boot.tmp.cleanOnBoot = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -43,6 +48,19 @@
 
   services.libinput.enable = true;
 
+  services.earlyoom = {
+    enable = true;
+    enableNotifications = true;
+    extraArgs = [
+      "-g"
+      "--prefer"
+      "(^|/)(java|chromium|dms|electron|next-server)$"
+      "--avoid"
+      "(^|/)(niri|tmux|init|X|nixd)$"
+    ];
+    freeMemThreshold = 5;
+  };
+
   catppuccin = {
     enable = true;
     flavor = "mocha";
@@ -51,11 +69,13 @@
   security = {
     doas = {
       enable = true;
-      extraRules = [{
-        groups = [ "wheel" ];
-        persist = true;
-        keepEnv = true;
-      }];
+      extraRules = [
+        {
+          groups = [ "wheel" ];
+          persist = true;
+          keepEnv = true;
+        }
+      ];
     };
     sudo.enable = false;
     polkit.enable = true;

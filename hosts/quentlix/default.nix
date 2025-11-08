@@ -45,6 +45,8 @@
   programs.direnv.enable = true;
   programs.wireshark.enable = true;
 
+  programs.nix-ld.enable = true;
+
   services.tailscale.enable = true;
 
   system.stateVersion = "25.11";
