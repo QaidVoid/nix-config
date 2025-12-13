@@ -13,6 +13,10 @@
     "aseprite"
     "youtube-upnext"
     "burpsuite"
+    "discord-ptb"
+    "claude-code"
+    "upwork"
+    "slack"
   ];
 
   programs.home-manager.enable = true;

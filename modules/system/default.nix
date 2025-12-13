@@ -27,7 +27,7 @@
     "nix-command"
     "flakes"
   ];
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_6_12;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -100,10 +100,24 @@
 
   networking.dhcpcd.enable = true;
 
+  # networking.wireless = {
+  #   enable = true;
+  #   userControlled.enable = true;
+  #   allowAuxiliaryImperativeNetworks = true;
+  # };
+
   networking.wireless = {
-    enable = true;
-    userControlled.enable = true;
-    allowAuxiliaryImperativeNetworks = true;
+    iwd = {
+      enable = true;
+      settings = {
+        Network = {
+          EnableIPv6 = true;
+        };
+        Settings = {
+          AutoConnect = true;
+        };
+      };
+    };
   };
 
   networking.nameservers = [ "1.1.1.1" ];
@@ -111,6 +125,6 @@
   programs.gnupg.agent = {
     enable = true;
   };
-  programs.ssh.startAgent = true;
+  # programs.ssh.startAgent = true;
   services.openssh.enable = true;
 }

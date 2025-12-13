@@ -14,13 +14,17 @@
     cargo-generate
     cargo-msrv
     cargo-update
+    claude-code
     cmake
     dig
+    discord-ptb
     dua
     firefox-devedition
     fish
+    font-manager
     gimp
     godot
+    gopls
     github-cli
     harper
     heroic
@@ -50,10 +54,14 @@
     opencode
     pnpm
     qbittorrent
+    quickemu
     racket
+    rclone
     rustup
     rust-code-analysis
     semgrep
+    signal-desktop
+    slack
     slurp
     steel
     stylua
@@ -63,10 +71,16 @@
     tridactyl-native
     typescript
     typescript-language-server
+    typst
+    typstyle
+    typst-live
     tailwindcss-language-server
     tree-sitter
     tombi
+    upwork
+    uv
     vesktop
+    wayvnc
     wezterm
     wiremix
     vscode-langservers-extracted

@@ -12,11 +12,14 @@
       jack.enable = true;
       extraConfig.pipewire-pulse = {
         "10-block-chromium" = {
-          "pulse.rules" =[
+          "pulse.rules" = [
             {
               matches = [
                 {
                   "application.name" = "~Chromium.*";
+                }
+                {
+                  "application.name" = "~Brave.*";
                 }
               ];
               actions = {

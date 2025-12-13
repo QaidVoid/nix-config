@@ -14,8 +14,8 @@
     config = {
       save-position-on-quit = true;
       gpu-api = "vulkan";
-      # Force using CPU instead of GPU
-      vulkan-device = "AMD Radeon Graphics (RADV RAPHAEL_MENDOCINO)";
+      hwdec = "vaapi";
+      vo = "wlshm";
     };
   };
 }

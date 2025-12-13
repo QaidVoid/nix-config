@@ -11,6 +11,7 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.open = false;
+  hardware.nvidia.modesetting.enable = true;
 
   networking.hostName = "quentlix";
 
@@ -29,6 +30,10 @@
             startUid = 100000;
         }
     ];
+  };
+
+  virtualisation.waydroid = {
+    enable = true;
   };
 
   virtualisation.podman = {
