@@ -11,16 +11,6 @@
     ./vaultwarden.nix
   ];
 
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "nvidia-x11"
-      "nvidia-settings"
-      "steam"
-      "steam-unwrapped"
-      "p7zip"
-    ];
-
   boot.tmp.cleanOnBoot = true;
 
   nix.settings.experimental-features = [

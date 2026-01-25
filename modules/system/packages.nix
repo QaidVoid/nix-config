@@ -3,6 +3,8 @@
   nixpkgs.overlays = [
     inputs.niri.overlays.niri
   ];
+
+  nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     android-tools
     bat
@@ -28,6 +30,7 @@
     jujutsu
     just
     libgcc
+    mise
     mold
     niri-unstable
     nix-output-monitor

@@ -7,7 +7,6 @@
     biome
     brave
     blender
-    blobdrop
     bun
     burpsuite
     cargo-edit
@@ -54,7 +53,6 @@
     opencode
     pnpm
     qbittorrent
-    quickemu
     racket
     rclone
     rustup
@@ -77,9 +75,8 @@
     tailwindcss-language-server
     tree-sitter
     tombi
-    upwork
+    # upwork
     uv
-    vesktop
     wayvnc
     wezterm
     wiremix

@@ -4,20 +4,20 @@
   [ (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" ];
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
 
   fileSystems."/" =
-    { device = "/dev/mapper/luks-782eca9f-2f9e-4d2c-97a3-e8efc9b78853";
+    { device = "/dev/mapper/luks";
       fsType = "btrfs";
       options = [ "compress=zstd" "noatime" "subvol=nixos" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/mapper/luks-782eca9f-2f9e-4d2c-97a3-e8efc9b78853";
+    { device = "/dev/mapper/luks";
       fsType = "btrfs";
-      options = [ "compress=zstd" "noatime" "subvol=home" ];
+      options = [ "compress=zstd" "noatime" "subvol=shelter" ];
     };
 
   fileSystems."/boot" =
@@ -26,7 +26,7 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  boot.initrd.luks.devices."luks-782eca9f-2f9e-4d2c-97a3-e8efc9b78853".device = "/dev/disk/by-uuid/782eca9f-2f9e-4d2c-97a3-e8efc9b78853";
+  boot.initrd.luks.devices."luks".device = "/dev/disk/by-uuid/782eca9f-2f9e-4d2c-97a3-e8efc9b78853";
 
   swapDevices = [ ];
 
