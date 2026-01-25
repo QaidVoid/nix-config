@@ -5,30 +5,40 @@
     ../../modules/system
   ];
 
-  sops.defaultSopsFile = ./secrets.yaml;
+  networking.hostName = "quentlix";
 
-  nix.settings.trusted-users = [ "root" "qaidvoid" ];
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.enable = true;
+
+  nix.settings.trusted-users = [
+    "root"
+    "qaidvoid"
+  ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.open = false;
   hardware.nvidia.modesetting.enable = true;
 
-  networking.hostName = "quentlix";
-
   users.users.qaidvoid = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "input" "video" "podman" "wireshark" ];
+    extraGroups = [
+      "wheel"
+      "input"
+      "video"
+      "podman"
+      "wireshark"
+    ];
     subGidRanges = [
-        {
-            count = 65536;
-            startGid = 100000;
-        }
+      {
+        count = 65536;
+        startGid = 100000;
+      }
     ];
     subUidRanges = [
-        {
-            count = 65536;
-            startUid = 100000;
-        }
+      {
+        count = 65536;
+        startUid = 100000;
+      }
     ];
   };
 
@@ -42,7 +52,22 @@
     dockerSocket.enable = true;
   };
 
+  boot.enable = true;
+  fonts.enable = true;
+  locale.enable = true;
+  networking.enable = true;
+  systemPackages.enable = true;
   pipewire.enable = true;
+  security.enable = true;
+  hardwareServices = {
+    enable = true;
+    openrgb = true;
+    libinput = true;
+    bluetooth = true;
+    earlyoom = true;
+  };
+  shells.enable = true;
+  theme.enable = true;
   postgresql.enable = true;
   steam.enable = true;
   vaultwarden.enable = true;

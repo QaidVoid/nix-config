@@ -1,18 +1,28 @@
-{ inputs, pkgs, ... }:
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [
-    inputs.dankMaterialShell.homeModules.dankMaterialShell.default
+    inputs.dankMaterialShell.homeModules.dank-material-shell
   ];
 
-  programs.dankMaterialShell = {
-    enable = true;
-    systemd = {
+  options.dms.enable = lib.mkEnableOption "Enable DankMaterialShell";
+
+  config = lib.mkIf config.dms.enable {
+    programs.dank-material-shell = {
       enable = true;
-      restartIfChanged = true;
+      systemd = {
+        enable = true;
+        restartIfChanged = true;
+      };
+      quickshell = {
+        package = inputs.quickshell.packages.${pkgs.system}.default;
+      };
+      enableVPN = false;
     };
-    quickshell = {
-      package = inputs.quickshell.packages.${pkgs.system}.default;
-    };
-    enableVPN = false;
   };
 }

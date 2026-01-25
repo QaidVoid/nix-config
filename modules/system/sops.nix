@@ -1,10 +1,13 @@
-{ ... }:
+{ config, lib, ... }:
 {
-  sops = {
-    # age.sshKeyPaths = [ "/home/qaidvoid/.ssh/id_ed25519" ];
-    age.keyFile = "/home/qaidvoid/.config/sops/age/keys.txt";
-    secrets = {
-      cloudflare_token = {};
+  options.sops.enable = lib.mkEnableOption "Enable sops";
+
+  config = lib.mkIf config.sops.enable {
+    sops = {
+      age.keyFile = "/home/qaidvoid/.config/sops/age/keys.txt";
+      secrets = {
+        cloudflare_token = { };
+      };
     };
   };
 }
