@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-amdgpu-fix.url = "github:NixOS/nixpkgs/pull/484928/head";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,6 +18,7 @@
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
     quickshell = {
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
@@ -32,6 +34,12 @@
     { home-manager, nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
+
+      # Overlay for amdgpu fix from PR #484928
+      amdgpu-overlay = final: prev: {
+        inherit (inputs.nixpkgs-amdgpu-fix.legacyPackages.${final.system}) xf86-video-amdgpu;
+      };
+
       hosts = [
         "quentlix"
         "zenlix"
@@ -44,6 +52,7 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
+            { nixpkgs.overlays = [ amdgpu-overlay ]; }
             inputs.catppuccin.nixosModules.catppuccin
             inputs.sops-nix.nixosModules.sops
             ./hosts/${hostName}

@@ -6,7 +6,7 @@
 }:
 {
   imports = [
-    inputs.zen-browser.homeModules.beta
+    inputs.zen-browser.homeModules.twilight
   ];
 
   options.zen.enable = lib.mkEnableOption "Enable Zen Browser";

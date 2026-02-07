@@ -9,8 +9,11 @@
 
   config = lib.mkIf config.userPackages.enable {
     home.packages = with pkgs; [
+      act
+      xmodmap
       ani-cli
       aseprite
+      xorg.xrandr
       b3sum
       biome
       brave
@@ -38,8 +41,10 @@
       hydra-check
       imagemagick
       inkscape
+      insomnia
       just-formatter
       just-lsp
+      keepassxc
       (localstack.override {
         python3 = python3.override {
           packageOverrides = self: super: {
@@ -58,11 +63,13 @@
       nixfmt
       nix-index
       nodejs_latest
+      ollama
       opencode
       pnpm
       qbittorrent
       racket
       rclone
+      rofi
       rustup
       rust-code-analysis
       semgrep
@@ -83,6 +90,7 @@
       tailwindcss-language-server
       tree-sitter
       tombi
+      upwork
       uv
       wayvnc
       wezterm

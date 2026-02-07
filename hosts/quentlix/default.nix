@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -15,9 +15,36 @@
     "qaidvoid"
   ];
 
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.open = false;
-  hardware.nvidia.modesetting.enable = true;
+  services.xserver.videoDrivers = [
+    "amdgpu"
+    "nvidia"
+  ];
+
+  hardware = {
+    nvidia = {
+      open = false;
+      modesetting = {
+        enable = true;
+      };
+      nvidiaSettings = true;
+      prime = {
+        offload = {
+          enable = true;
+          enableOffloadCmd = true;
+        };
+        amdgpuBusId = "PCI:16:0:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
+    };
+  };
+
+  xorg = {
+    enable = true;
+    autorun = false;
+    displayManager.type = "startx";
+    windowManager.type = "i3";
+    desktopManager.type = "xfce";
+  };
 
   users.users.qaidvoid = {
     isNormalUser = true;
@@ -70,7 +97,9 @@
   theme.enable = true;
   postgresql.enable = true;
   steam.enable = true;
+  sunshine.enable = true;
   vaultwarden.enable = true;
+  virtualization.enable = true;
 
   programs.direnv.enable = true;
   programs.wireshark.enable = true;

@@ -15,7 +15,13 @@
         };
       };
     };
+    networking.firewall.enable = false;
     networking.nameservers = [ "1.1.1.1" ];
-    services.openssh.enable = true;
+    services.openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = true;
+      };
+    };
   };
 }

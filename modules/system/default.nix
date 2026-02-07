@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -14,8 +14,11 @@
     ./sops.nix
     ./shells.nix
     ./steam.nix
+    ./sunshine.nix
     ./theme.nix
     ./vaultwarden.nix
+    ./virtualization.nix
+    ./xorg.nix
   ];
 
   nix.settings.experimental-features = [
