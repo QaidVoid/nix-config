@@ -36,6 +36,7 @@
       godot
       gopls
       github-cli
+      gpu-screen-recorder
       harper
       heroic
       hydra-check
@@ -104,7 +105,5 @@
       zoxide
       zls_0_15
     ];
-
-    programs.obs-studio.enable = true;
   };
 }
