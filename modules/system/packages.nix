@@ -41,7 +41,6 @@
       libgcc
       mise
       mold
-      niri-unstable
       nix-output-monitor
       openssl
       p7zip-rar
@@ -62,6 +61,11 @@
       enable = true;
       package = inputs.neovim-nightly.packages.${pkgs.system}.default;
       defaultEditor = true;
+    };
+
+    programs.niri = {
+      enable = true;
+      package = pkgs.niri-unstable;
     };
   };
 }

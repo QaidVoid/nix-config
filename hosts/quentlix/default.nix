@@ -102,11 +102,21 @@
   virtualization.enable = true;
 
   programs.direnv.enable = true;
-  programs.wireshark.enable = true;
+  programs.wireshark = {
+    enable = true;
+    dumpcap.enable = true;
+    usbmon.enable = true;
+  };
 
   programs.nix-ld.enable = true;
 
   services.tailscale.enable = true;
+
+  # AULA F75
+  services.udev.extraRules = ''
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="258a", ATTR{idProduct}=="010c", MODE="0666"
+    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="258a", ATTR{idProduct}=="010c", MODE="0666"
+  '';
 
   system.stateVersion = "25.11";
 }

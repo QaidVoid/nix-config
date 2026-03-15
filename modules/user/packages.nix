@@ -4,6 +4,9 @@
   pkgs,
   ...
 }:
+let
+  scrinio = pkgs.callPackage ../../pkgs/scrinio.nix { };
+in
 {
   options.userPackages.enable = lib.mkEnableOption "Enable user packages";
 
@@ -13,11 +16,13 @@
       xmodmap
       ani-cli
       aseprite
-      xorg.xrandr
+      xrandr
       b3sum
+      bitcoind
       biome
       brave
       blender
+      browsh
       bun
       burpsuite
       cargo-edit
@@ -37,6 +42,7 @@
       gopls
       github-cli
       gpu-screen-recorder
+      grim
       harper
       heroic
       hydra-check
@@ -46,20 +52,9 @@
       just-formatter
       just-lsp
       keepassxc
-      (localstack.override {
-        python3 = python3.override {
-          packageOverrides = self: super: {
-            localstack-ext = super.localstack-ext.overridePythonAttrs (oldAttrs: {
-              propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or [ ]) ++ [
-                self.pyjwt
-              ];
-            });
-          };
-        };
-      })
+      libnotify
       lua-language-server
       mdbook
-      nautilus
       nixd
       nixfmt
       nix-index
@@ -73,6 +68,7 @@
       rofi
       rustup
       rust-code-analysis
+      scrinio
       semgrep
       signal-desktop
       slack
@@ -98,12 +94,12 @@
       wiremix
       vscode-langservers-extracted
       xwayland-satellite
-      wf-recorder
+      wireshark-qt
       yt-dlp
       zathura
       zed-editor
       zoxide
-      zls_0_15
+      zls
     ];
   };
 }

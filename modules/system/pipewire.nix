@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 {
   options = {
     pipewire.enable = lib.mkEnableOption "Enable pipewire";
@@ -16,10 +16,7 @@
             {
               matches = [
                 {
-                  "application.name" = "~Chromium.*";
-                }
-                {
-                  "application.name" = "~Brave.*";
+                  "application.name" = "*";
                 }
               ];
               actions = {

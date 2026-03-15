@@ -21,7 +21,13 @@ in
       extraPortals = [
         pkgs.xdg-desktop-portal-gnome
       ];
-      config.common.default = [ "gnome" ];
+      config = {
+        common.default = [ "gtk" "gnome" ];
+        niri = {
+          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+          default = [ "gtk" "gnome" ];
+        };
+      };
     };
 
     xdg.desktopEntries = noDesktopEntries [
