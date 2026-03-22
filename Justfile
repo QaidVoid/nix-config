@@ -8,7 +8,7 @@ default:
 [group('nix')]
 switch:
   nixos-rebuild build --flake .#{{hostname}} |& nom
-  nixos-rebuild switch --flake .#{{hostname}} --sudo
+  doas nixos-rebuild switch --flake .#{{hostname}}
   dix {{prev_system}} /run/current-system
 
 [group('nix')]

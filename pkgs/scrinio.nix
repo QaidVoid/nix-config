@@ -60,7 +60,7 @@ stdenv.mkDerivation rec {
   version = "6.20.0";
 
   src = fetchurl {
-    url = "https://github.com/ScreenshotMonitor/scrinio-app-releases/releases/download/6.20.0/scrinio-amd64.deb";
+    url = "https://github.com/ScreenshotMonitor/scrinio-app-releases/releases/download/v6.20.0/scrinio-amd64.deb";
     sha256 = "sha256-fRZWFGnyWHFjkFouTZbEyDz7tzaVoFsI+pcmPLhhLAw=";
   };
 
@@ -183,6 +183,12 @@ stdenv.mkDerivation rec {
         }
     }
 }'
+
+    # Capture only the specified display via GRIM_OUTPUT env var
+    substituteInPlace $out/opt/scrin.io/resources/app/dist-main/main/utils/platform/LinuxStrategy.js \
+      --replace-fail \
+        'return this.runTempFileScreenshot("grim", ["{FILE}"], ".jpg");' \
+        'return this.runTempFileScreenshot("grim", process.env.GRIM_OUTPUT ? ["-o", process.env.GRIM_OUTPUT, "{FILE}"] : ["{FILE}"], ".jpg");'
 
     asar pack $out/opt/scrin.io/resources/app $out/opt/scrin.io/resources/app.asar
     rm -rf $out/opt/scrin.io/resources/app
