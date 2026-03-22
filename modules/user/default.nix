@@ -2,7 +2,6 @@
 {
   imports = [
     ./cli.nix
-    ./dms.nix
     ./mpv.nix
     ./packages.nix
     ./theme.nix

@@ -94,7 +94,7 @@ in
       wiremix
       vscode-langservers-extracted
       xwayland-satellite
-      wireshark-qt
+      wireshark
       yt-dlp
       zathura
       zed-editor

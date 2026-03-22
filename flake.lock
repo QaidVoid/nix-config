@@ -18,27 +18,6 @@
         "type": "github"
       }
     },
-    "dankMaterialShell": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "quickshell": "quickshell"
-      },
-      "locked": {
-        "lastModified": 1774138300,
-        "narHash": "sha256-lyjYaJ4+N7/tqvFXYka35exXildGOBV1JMFMu25O5ek=",
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "rev": "4266c064a99305050b77dd568eb49eed03d83088",
-        "type": "github"
-      },
-      "original": {
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -267,58 +246,14 @@
         "type": "indirect"
       }
     },
-    "quickshell": {
-      "inputs": {
-        "nixpkgs": [
-          "dankMaterialShell",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1766725085,
-        "narHash": "sha256-O2aMFdDUYJazFrlwL7aSIHbUSEm3ADVZjmf41uBJfHs=",
-        "ref": "refs/heads/master",
-        "rev": "41828c4180fb921df7992a5405f5ff05d2ac2fff",
-        "revCount": 715,
-        "type": "git",
-        "url": "https://git.outfoxxed.me/quickshell/quickshell"
-      },
-      "original": {
-        "rev": "41828c4180fb921df7992a5405f5ff05d2ac2fff",
-        "type": "git",
-        "url": "https://git.outfoxxed.me/quickshell/quickshell"
-      }
-    },
-    "quickshell_2": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1773988952,
-        "narHash": "sha256-XV/WgkkZ6OLJ+W0vrD4bXB7/ErQysc5R5lrkT2/VBVs=",
-        "ref": "refs/heads/master",
-        "rev": "6a244c3c560b45f3b860ed6c0fc54d0291ab6f57",
-        "revCount": 774,
-        "type": "git",
-        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
-      }
-    },
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
-        "dankMaterialShell": "dankMaterialShell",
         "home-manager": "home-manager",
         "neovim-nightly": "neovim-nightly",
         "niri": "niri",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-amdgpu-fix": "nixpkgs-amdgpu-fix",
-        "quickshell": "quickshell_2",
         "sops-nix": "sops-nix",
         "zen-browser": "zen-browser"
       }

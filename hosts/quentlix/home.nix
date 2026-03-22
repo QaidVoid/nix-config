@@ -10,7 +10,6 @@
   cli.enable = true;
   cli.enableStarship = true;
   cli.enableYazi = true;
-  dms.enable = true;
   mpv.enable = true;
   userPackages.enable = true;
   userTheme.enable = true;
