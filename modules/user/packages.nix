@@ -6,6 +6,7 @@
 }:
 let
   scrinio = pkgs.callPackage ../../pkgs/scrinio.nix { };
+  helium-browser = pkgs.callPackage ../../pkgs/helium-browser.nix { };
 in
 {
   options.userPackages.enable = lib.mkEnableOption "Enable user packages";
@@ -44,6 +45,7 @@ in
       gpu-screen-recorder
       grim
       harper
+      helium-browser
       heroic
       hydra-check
       imagemagick
@@ -87,7 +89,7 @@ in
       tailwindcss-language-server
       tree-sitter
       tombi
-      upwork
+      # upwork
       uv
       wayvnc
       wezterm
@@ -100,6 +102,12 @@ in
       zed-editor
       zoxide
       zls
+      lxqt.lxqt-policykit
+      vscode-langservers-extracted
+      sccache
+      libreoffice-fresh
+      pandoc
+      antiword
     ];
   };
 }

@@ -1,9 +1,11 @@
-{ inputs, ... }:
+{ inputs, lib, config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
     ../../modules/system
   ];
+
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   networking.hostName = "quentlix";
 
@@ -22,6 +24,7 @@
 
   hardware = {
     nvidia = {
+      package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
       open = false;
       modesetting = {
         enable = true;
@@ -109,6 +112,10 @@
   };
 
   services.tailscale.enable = true;
+
+  # Disable gnome-keyring (auto-enabled by xfce)
+  security.pam.services.login.enableGnomeKeyring = lib.mkForce false;
+  services.gnome.gnome-keyring.enable = lib.mkForce false;
 
   # AULA F75
   services.udev.extraRules = ''

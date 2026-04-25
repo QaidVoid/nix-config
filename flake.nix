@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs-amdgpu-fix.url = "github:NixOS/nixpkgs/pull/484928/head";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,11 +26,6 @@
     let
       system = "x86_64-linux";
 
-      # Overlay for amdgpu fix from PR #484928
-      amdgpu-overlay = final: prev: {
-        inherit (inputs.nixpkgs-amdgpu-fix.legacyPackages.${final.system}) xf86-video-amdgpu;
-      };
-
       hosts = [
         "quentlix"
         "zenlix"
@@ -44,7 +38,7 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            { nixpkgs.overlays = [ amdgpu-overlay ]; }
+            { nixpkgs.overlays = []; }
             inputs.catppuccin.nixosModules.catppuccin
             inputs.sops-nix.nixosModules.sops
             ./hosts/${hostName}
@@ -55,7 +49,10 @@
       mkHomeConfiguration =
         hostName:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [];
+          };
           extraSpecialArgs = { inherit inputs; };
           modules = [ ./hosts/${hostName}/home.nix ];
         };

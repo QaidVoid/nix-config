@@ -45,7 +45,7 @@
   libxcb,
   libxkbcommon,
   mesa,
-  nodePackages,
+  asar,
   nspr,
   nss,
   pango,
@@ -70,7 +70,7 @@ stdenv.mkDerivation rec {
     autoPatchelfHook
     makeWrapper
     pkg-config
-    nodePackages.asar
+    asar
   ];
 
   buildInputs = [
