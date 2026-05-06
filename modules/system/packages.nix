@@ -9,10 +9,6 @@
   options.systemPackages.enable = lib.mkEnableOption "Enable system packages";
 
   config = lib.mkIf config.systemPackages.enable {
-    nixpkgs.overlays = [
-      inputs.niri.overlays.niri
-    ];
-
     nixpkgs.config.allowUnfree = true;
     environment.systemPackages = with pkgs; [
       android-tools
@@ -41,6 +37,7 @@
       libgcc
       mise
       mold
+      niri
       nix-output-monitor
       openssl
       p7zip-rar
@@ -53,7 +50,7 @@
       unzip
       xdg-utils
       wl-clipboard
-      zig_0_15
+      zig
       (pkgs.writeShellScriptBin "sudo" "doas $@")
     ];
 
@@ -63,9 +60,6 @@
       defaultEditor = true;
     };
 
-    programs.niri = {
-      enable = true;
-      package = pkgs.niri-unstable;
-    };
+    programs.mango.enable = true;
   };
 }

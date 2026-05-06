@@ -32,8 +32,9 @@ in
       cargo-update
       claude-code
       cmake
+      deno
       dig
-      discord-ptb
+      discord
       dua
       firefox-devedition
       fish
@@ -61,7 +62,7 @@ in
       nixfmt
       nix-index
       nodejs_latest
-      ollama
+      ollama-cuda
       opencode
       pnpm
       qbittorrent
@@ -78,6 +79,7 @@ in
       steel
       stylua
       svelte-language-server
+      swaybg
       telegram-desktop
       tiled
       tridactyl-native
@@ -102,12 +104,8 @@ in
       zed-editor
       zoxide
       zls
-      lxqt.lxqt-policykit
       vscode-langservers-extracted
       sccache
-      libreoffice-fresh
-      pandoc
-      antiword
     ];
   };
 }

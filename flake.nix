@@ -8,8 +8,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
+    mangowm = {
+      url = "github:mangowm/mango";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
-    niri.url = "github:sodiboo/niri-flake";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,6 +44,7 @@
             { nixpkgs.overlays = []; }
             inputs.catppuccin.nixosModules.catppuccin
             inputs.sops-nix.nixosModules.sops
+            inputs.mangowm.nixosModules.mango
             ./hosts/${hostName}
           ];
         };

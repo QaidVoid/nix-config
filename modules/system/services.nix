@@ -55,7 +55,7 @@
         "--prefer"
         "(^|/)(java|chromium|dms|electron|next-server)$"
         "--avoid"
-        "(^|/)(niri|tmux|init|X|nixd)$"
+        "(^|/)(niri|mango|tmux|init|X|nixd)$"
       ];
       freeMemThreshold = 5;
     };

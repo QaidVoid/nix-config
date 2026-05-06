@@ -20,12 +20,18 @@ in
       enable = true;
       extraPortals = [
         pkgs.xdg-desktop-portal-gnome
+        pkgs.xdg-desktop-portal-wlr
       ];
       config = {
-        common.default = [ "gtk" "gnome" ];
         niri = {
           "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
           default = [ "gtk" "gnome" ];
+        };
+        mango = {
+          "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+          "org.freedesktop.impl.portal.ScreenShot" = [ "wlr" ];
+          "org.freedesktop.impl.portal.Inhibit" = [ "none" ];
+          default = [ "gtk" ];
         };
       };
     };

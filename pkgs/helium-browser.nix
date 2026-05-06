@@ -49,11 +49,11 @@
 
 stdenv.mkDerivation rec {
   pname = "helium-browser";
-  version = "0.11.2.1";
+  version = "0.11.7.1";
 
   src = fetchurl {
     url = "https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-x86_64_linux.tar.xz";
-    hash = "sha256-7m4j0r1yQP5n2ww/+947ffR/PlcZPgvT29SyBo/qzZw=";
+    hash = "sha256-V0drAliKB8HFkxDG9I+bPThLH0I/cJpG92v3aORaX/Y=";
   };
 
   sourceRoot = "helium-${version}-x86_64_linux";
