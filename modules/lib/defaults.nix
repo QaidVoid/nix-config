@@ -4,7 +4,6 @@
 
   timezone = "Asia/Kathmandu";
   locale = "en_US.UTF-8";
-  keyMap = "dvorak";
 
   catppuccinFlavor = "mocha";
   catppuccinAccent = "flamingo";

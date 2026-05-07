@@ -7,7 +7,6 @@
 
     console = {
       earlySetup = true;
-      keyMap = "dvorak";
     };
   };
 }
