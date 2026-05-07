@@ -28,6 +28,7 @@
     { home-manager, nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
+      defaults = import ./modules/lib/defaults.nix;
 
       hosts = [
         "quentlix"
@@ -39,7 +40,7 @@
         hostName:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs defaults; };
           modules = [
             { nixpkgs.overlays = []; }
             inputs.catppuccin.nixosModules.catppuccin
@@ -57,7 +58,7 @@
             inherit system;
             overlays = [];
           };
-          extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = { inherit inputs defaults; };
           modules = [ ./hosts/${hostName}/home.nix ];
         };
 

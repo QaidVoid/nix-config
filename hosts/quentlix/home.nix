@@ -1,11 +1,11 @@
-{ ... }:
+{ defaults, ... }:
 {
   imports = [
     ../../modules/user
   ];
 
-  home.username = "qaidvoid";
-  home.homeDirectory = "/home/qaidvoid";
+  home.username = defaults.username;
+  home.homeDirectory = defaults.homeDirectory;
 
   cli.enable = true;
   cli.enableStarship = true;

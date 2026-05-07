@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  defaults,
   ...
 }:
 {
@@ -22,7 +23,7 @@
         host all       all     ::1/128        trust
       '';
       initialScript = pkgs.writeText "backend-initScript" ''
-        CREATE ROLE qaidvoid WITH LOGIN PASSWORD 'password' CREATEDB;
+        CREATE ROLE ${defaults.username} WITH LOGIN PASSWORD 'password' CREATEDB;
       '';
     };
   };

@@ -1,4 +1,4 @@
-{ ... }:
+{ defaults, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -7,7 +7,7 @@
 
   networking.hostName = "zenlix";
 
-  users.users.qaidvoid = {
+  users.users.${defaults.username} = {
     isNormalUser = true;
     extraGroups = [
       "wheel"

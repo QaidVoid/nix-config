@@ -2,15 +2,19 @@
   config,
   lib,
   pkgs,
+  defaults,
   ...
 }:
+let
+  shellPkg = pkgs.${defaults.defaultShell};
+in
 {
   options.shells.enable = lib.mkEnableOption "Enable shells";
 
   config = lib.mkIf config.shells.enable {
-    environment.shells = with pkgs; [ fish ];
+    environment.shells = [ shellPkg ];
 
-    programs.fish.enable = true;
-    users.defaultUserShell = pkgs.fish;
+    programs.${defaults.defaultShell}.enable = true;
+    users.defaultUserShell = shellPkg;
   };
 }

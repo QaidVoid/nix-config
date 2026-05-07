@@ -1,4 +1,4 @@
-{ inputs, lib, config, ... }:
+{ inputs, lib, config, defaults, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -14,7 +14,7 @@
 
   nix.settings.trusted-users = [
     "root"
-    "qaidvoid"
+    defaults.username
   ];
 
   services.xserver.videoDrivers = [
@@ -49,7 +49,7 @@
     desktopManager.type = "xfce";
   };
 
-  users.users.qaidvoid = {
+  users.users.${defaults.username} = {
     isNormalUser = true;
     extraGroups = [
       "wheel"

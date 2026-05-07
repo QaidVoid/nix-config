@@ -2,8 +2,18 @@
   config,
   lib,
   pkgs,
+  defaults,
   ...
 }:
+let
+  flavor = defaults.catppuccinFlavor;
+  accent = defaults.catppuccinAccent;
+  cursorPkg =
+    let
+      cap = s: (lib.toUpper (lib.substring 0 1 s)) + (lib.substring 1 (lib.stringLength s) s);
+    in
+    pkgs.catppuccin-cursors."${flavor}${cap accent}";
+in
 {
   options.userTheme.enable = lib.mkEnableOption "Enable user theme";
 
@@ -15,24 +25,24 @@
       dconf
 
       (catppuccin-gtk.override {
-        accents = [ "flamingo" ];
-        variant = "mocha";
+        accents = [ accent ];
+        variant = flavor;
       })
       (catppuccin-gtk.override {
-        accents = [ "flamingo" ];
+        accents = [ accent ];
         variant = "latte";
       })
 
       (catppuccin-kvantum.override {
-        accent = "flamingo";
-        variant = "mocha";
+        inherit accent;
+        variant = flavor;
       })
       (catppuccin-kvantum.override {
-        accent = "flamingo";
+        inherit accent;
         variant = "latte";
       })
 
-      catppuccin-cursors.mochaFlamingo
+      cursorPkg
     ];
 
     qt = {

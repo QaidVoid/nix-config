@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  defaults,
   ...
 }:
 {
@@ -26,6 +27,6 @@
     networking.firewall.trustedInterfaces = [ "virbr0" ];
 
     programs.virt-manager.enable = true;
-    users.users.qaidvoid.extraGroups = [ "libvirtd" ];
+    users.users.${defaults.username}.extraGroups = [ "libvirtd" ];
   };
 }

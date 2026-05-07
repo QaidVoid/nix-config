@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, defaults, ... }:
 {
   options.networking.enable = lib.mkEnableOption "Enable networking configuration";
 
@@ -16,7 +16,7 @@
       };
     };
     networking.firewall.enable = false;
-    networking.nameservers = [ "1.1.1.1" ];
+    networking.nameservers = defaults.dnsServers;
     services.openssh = {
       enable = true;
       settings = {
