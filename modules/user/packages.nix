@@ -7,6 +7,21 @@
 let
   scrinio = pkgs.callPackage ../../pkgs/scrinio.nix { };
   helium-browser = pkgs.callPackage ../../pkgs/helium-browser.nix { };
+
+  # GTX 1060 is Pascal (sm_61); upstream ollama-cuda no longer compiles CUDA
+  # kernels for that arch. Override cudaArches to add it back. If FlashAttention
+  # fails on Pascal (48 KB shared memory limit), set OLLAMA_FLASH_ATTENTION=0.
+  ollama-pascal = pkgs.ollama.override {
+    acceleration = "cuda";
+    cudaArches = [
+      "sm_61"
+      "sm_75"
+      "sm_80"
+      "sm_86"
+      "sm_89"
+      "sm_90"
+    ];
+  };
 in
 {
   options.userPackages.enable = lib.mkEnableOption "Enable user packages";
@@ -33,9 +48,11 @@ in
       claude-code
       cmake
       deno
+      devenv
       dig
       discord
       dua
+      eww
       firefox-devedition
       fish
       font-manager
@@ -62,7 +79,7 @@ in
       nixfmt
       nix-index
       nodejs_latest
-      ollama-cuda
+      ollama-pascal
       opencode
       pnpm
       qbittorrent
@@ -106,6 +123,7 @@ in
       zls
       vscode-langservers-extracted
       sccache
+      zellij
     ];
   };
 }

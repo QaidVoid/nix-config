@@ -16,5 +16,11 @@
   userXdg.enable = true;
   zen.enable = true;
 
+  xdg.configFile."containers/containers.conf".text = ''
+    [engine]
+    cgroup_manager = "cgroupfs"
+    events_logger = "file"
+  '';
+
   home.stateVersion = "25.05";
 }

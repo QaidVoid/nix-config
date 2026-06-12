@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    # Pull claude-code from master
+    nixpkgs-claude-code.url = "github:NixOS/nixpkgs/master";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +32,19 @@
       system = "x86_64-linux";
       defaults = import ./modules/lib/defaults.nix;
 
+      # Pull claude-code from nixpkgs master until nixos-unstable has PR #530023.
+      overlays = [
+        (final: prev: {
+          inherit
+            (import inputs.nixpkgs-claude-code {
+              inherit system;
+              config.allowUnfree = true;
+            })
+            claude-code
+            ;
+        })
+      ];
+
       hosts = [
         "quentlix"
         "zenlix"
@@ -42,7 +57,7 @@
           inherit system;
           specialArgs = { inherit inputs defaults; };
           modules = [
-            { nixpkgs.overlays = []; }
+            { nixpkgs.overlays = overlays; }
             inputs.catppuccin.nixosModules.catppuccin
             inputs.sops-nix.nixosModules.sops
             inputs.mangowm.nixosModules.mango
@@ -56,7 +71,7 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             inherit system;
-            overlays = [];
+            inherit overlays;
           };
           extraSpecialArgs = { inherit inputs defaults; };
           modules = [ ./hosts/${hostName}/home.nix ];

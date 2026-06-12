@@ -49,11 +49,11 @@
 
 stdenv.mkDerivation rec {
   pname = "helium-browser";
-  version = "0.11.7.1";
+  version = "0.12.5.1";
 
   src = fetchurl {
     url = "https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-x86_64_linux.tar.xz";
-    hash = "sha256-V0drAliKB8HFkxDG9I+bPThLH0I/cJpG92v3aORaX/Y=";
+    hash = "sha256-tfiy1MkxXq9vOjp57R3ykHjleG0Viz/C2ttwXbHnPwA=";
   };
 
   sourceRoot = "helium-${version}-x86_64_linux";
@@ -121,7 +121,10 @@ stdenv.mkDerivation rec {
       icon = "helium-browser";
       desktopName = "Helium";
       genericName = "Web Browser";
-      categories = [ "Network" "WebBrowser" ];
+      categories = [
+        "Network"
+        "WebBrowser"
+      ];
       mimeTypes = [
         "application/pdf"
         "application/xhtml+xml"
@@ -131,8 +134,14 @@ stdenv.mkDerivation rec {
         "x-scheme-handler/https"
       ];
       actions = {
-        new-window = { name = "New Window"; exec = "helium-browser"; };
-        new-private-window = { name = "New Incognito Window"; exec = "helium-browser --incognito"; };
+        new-window = {
+          name = "New Window";
+          exec = "helium-browser";
+        };
+        new-private-window = {
+          name = "New Incognito Window";
+          exec = "helium-browser --incognito";
+        };
       };
     })
   ];
@@ -150,7 +159,16 @@ stdenv.mkDerivation rec {
 
     # Add RUNPATH for dlopen'd libs (EGL/DMA-BUF screen capture, PipeWire, VA-API)
     # autoPatchelfHook only handles directly linked deps, not dlopen'd ones
-    patchelf --add-rpath "${lib.makeLibraryPath [ libglvnd mesa pipewire libpulseaudio wayland libva ]}" $out/opt/helium/helium
+    patchelf --add-rpath "${
+      lib.makeLibraryPath [
+        libglvnd
+        mesa
+        pipewire
+        libpulseaudio
+        wayland
+        libva
+      ]
+    }" $out/opt/helium/helium
 
     # Icon
     install -Dm644 $out/opt/helium/product_logo_256.png $out/share/icons/hicolor/256x256/apps/helium-browser.png
@@ -160,7 +178,17 @@ stdenv.mkDerivation rec {
     makeWrapper $out/opt/helium/helium $out/bin/helium-browser \
       "''${gappsWrapperArgs[@]}" \
       "''${qtWrapperArgs[@]}" \
-      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libglvnd mesa vulkan-loader pipewire libpulseaudio libva wayland ]}:${addDriverRunpath.driverLink}/lib" \
+      --prefix LD_LIBRARY_PATH : "${
+        lib.makeLibraryPath [
+          libglvnd
+          mesa
+          vulkan-loader
+          pipewire
+          libpulseaudio
+          libva
+          wayland
+        ]
+      }:${addDriverRunpath.driverLink}/lib" \
       --add-flags "--ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer,WaylandWindowDecorations --disable-gpu-rasterization" \
       --add-flags "--disable-component-update --disable-background-networking" \
       ${lib.optionalString (commandLineArgs != "") ''--add-flags "${commandLineArgs}"''}
@@ -173,7 +201,10 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/imputnet/helium-linux";
     mainProgram = "helium-browser";
     platforms = [ "x86_64-linux" ];
-    license = with lib.licenses; [ gpl3Only bsd3 ];
+    license = with lib.licenses; [
+      gpl3Only
+      bsd3
+    ];
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
   };
 }

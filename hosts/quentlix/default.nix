@@ -1,4 +1,10 @@
-{ inputs, lib, config, defaults, ... }:
+{
+  inputs,
+  lib,
+  config,
+  defaults,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -6,6 +12,7 @@
   ];
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.preferStaticEmulators = true;
 
   networking.hostName = "quentlix";
 
@@ -16,6 +23,8 @@
     "root"
     defaults.username
   ];
+
+  services.gvfs.enable = true;
 
   services.xserver.videoDrivers = [
     "amdgpu"
@@ -51,12 +60,15 @@
 
   users.users.${defaults.username} = {
     isNormalUser = true;
+    linger = true;
     extraGroups = [
       "wheel"
       "input"
+      "kvm"
       "video"
       "podman"
       "wireshark"
+      "dialout"
     ];
     subGidRanges = [
       {
@@ -71,6 +83,8 @@
       }
     ];
   };
+
+  virtualisation.containers.enable = true;
 
   virtualisation.waydroid = {
     enable = true;
