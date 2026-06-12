@@ -1,0 +1,13 @@
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/mapper/luks
+UUID=ea7a2489-6ced-4a72-8084-b034b98c2c9c	/         	btrfs     	rw,noatime,nodiratime,compress=zstd:3,ssd,space_cache=v2,subvol=/artix	0 0
+
+# /dev/mapper/luks
+UUID=ea7a2489-6ced-4a72-8084-b034b98c2c9c	/         	btrfs     	rw,noatime,nodiratime,compress=zstd:3,ssd,space_cache=v2,subvol=/hideout	0 0
+
+# /dev/nvme0n1p1
+UUID=A210-C16E      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+

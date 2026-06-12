@@ -1,0 +1,218 @@
+#!/bin/sh
+set -eu
+
+AUR_URL="https://aur.archlinux.org"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/dotfiles-aur"
+AUR_LIST=""
+DRY=0
+FORCE=0
+ACTION=""
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+die() { printf "${RED}%s${RESET}\n" "$*" >&2; exit 1; }
+info() { printf "  %s\n" "$*"; }
+warn() { printf "${YELLOW}  %s${RESET}\n" "$*"; }
+ok() { printf "${GREEN}  %s${RESET}\n" "$*"; }
+
+pkg_is_installed() { pacman -Qi "$1" >/dev/null 2>&1; }
+
+# Check if package exists in official repos
+pkg_in_repo() { pacman -Si "$1" >/dev/null 2>&1; }
+
+# Clone or update the AUR repo for a package
+clone_or_pull() {
+    pkg="$1"
+    dir="$CACHE_DIR/$pkg"
+    if [ -d "$dir" ]; then
+        if [ "$ACTION" = "install" ]; then
+            git -C "$dir" reset --hard HEAD -q
+            git -C "$dir" pull -q 2>/dev/null || true
+        else
+            git -C "$dir" fetch -q 2>/dev/null || true
+            git -C "$dir" reset --hard '@{upstream}' -q
+        fi
+    else
+        git clone -q "$AUR_URL/$pkg.git" "$dir" 2>/dev/null
+    fi
+}
+
+# Extract dependency names (strip version constraints) from .SRCINFO
+get_deps() {
+    pkg="$1"
+    dir="$CACHE_DIR/$pkg"
+    [ -f "$dir/.SRCINFO" ] || return
+    sed -n 's/^\s*\(depend\|makedepend\)s\? = \(.*\)/\2/p' "$dir/.SRCINFO" |
+        sed 's/[>=<].*//' |
+        sort -u
+}
+
+# Recursively resolve missing AUR dependencies in topological order
+resolve_deps() {
+    pkg="$1"
+    visited="$2"
+    order="$3"
+    for dep in $(get_deps "$pkg"); do
+        case " $visited " in
+            *" $dep "*) continue ;;
+        esac
+        visited="$visited $dep "
+        # Skip already-installed or official repo deps
+        if pkg_is_installed "$dep"; then
+            continue
+        fi
+        if pkg_in_repo "$dep"; then
+            continue
+        fi
+        clone_or_pull "$dep"
+        visited="$visited $dep "
+        result=$(resolve_deps "$dep" "$visited" "")
+        order="$result $order"
+    done
+    if ! pkg_is_installed "$pkg"; then
+        order="$order $pkg"
+    fi
+    printf "%s" "$order"
+}
+
+# Check if an installed package has a newer version available.
+# VCS packages (-git, -hg, -svn, -cvs) always return true since
+# their pkgver is computed at build time from the source.
+needs_update() {
+    pkg="$1"
+    pkg_is_installed "$pkg" || return 0
+    dir="$CACHE_DIR/$pkg"
+    [ -f "$dir/PKGBUILD" ] || return 0
+    case "$pkg" in
+        *-git|*-hg|*-svn|*-cvs) return 0 ;;
+    esac
+    srcinfo=$(cd "$dir" && makepkg --printsrcinfo 2>/dev/null)
+    ver=$(echo "$srcinfo" | sed -n 's/^\s*pkgver = \(.*\)/\1/p' | head -1)
+    rel=$(echo "$srcinfo" | sed -n 's/^\s*pkgrel = \(.*\)/\1/p' | head -1)
+    ep=$(echo "$srcinfo" | sed -n 's/^\s*epoch = \(.*\)/\1/p' | head -1)
+    [ -z "$ver" ] && return 0
+    built_ver="${ep:+$ep:}${ver}-${rel}"
+    old_ver=$(pacman -Q "$pkg" 2>/dev/null | awk '{print $2}' | sed 's/.*://')
+    [ "$old_ver" != "$built_ver" ]
+}
+
+# Compare two PKGBUILDs. Return 0 if the only changes are version,
+# checksum, or source URL lines; anything else is a security concern.
+is_version_only_change() {
+    old="$1"
+    new="$2"
+    diff_output=$(diff "$old" "$new" 2>/dev/null || true)
+    [ -z "$diff_output" ] && return 0 || true
+    echo "$diff_output" | grep '^[<>]' | grep -vE \
+        '^[<>]\s*(pkgver=|pkgrel=|sha[0-9]+sums=|md5sums=|source=.*::)|^[<>]\s*$' |
+        grep -qE '^[<>]' && return 1
+    return 0
+}
+
+# Build and install a package with security checks:
+#   - If cached PKGBUILD exists, diff it against the new one
+#   - If diff contains non-version changes, require explicit approval
+#   - Cache the PKGBUILD after approval for future comparisons
+check_and_install() {
+    pkg="$1"
+    dir="$CACHE_DIR/$pkg"
+    pkgbuild="$dir/PKGBUILD"
+    cached="$CACHE_DIR/.pkgbuilds/$pkg"
+
+    mkdir -p "$CACHE_DIR/.pkgbuilds"
+
+    if [ -f "$cached" ] && ! is_version_only_change "$cached" "$pkgbuild"; then
+        printf "\n${BOLD}${RED}[security] %s: PKGBUILD has non-version changes!${RESET}\n" "$pkg"
+        diff --color=always -u "$cached" "$pkgbuild" 2>/dev/null || true
+        printf "\n  ${YELLOW}Approve these changes? [y/N]${RESET} "
+        read -r answer
+        case "$answer" in
+            [yY]*) ;;
+            *) warn "skipping $pkg"; return 1 ;;
+        esac
+    elif [ -f "$cached" ]; then
+        ok "[safe] $pkg: only version/checksum changes"
+    else
+        info "[new] $pkg: first install, caching PKGBUILD"
+    fi
+
+    cp "$pkgbuild" "$cached"
+
+    if [ "$DRY" = "1" ]; then
+        info "[dry] would build $pkg"
+        return 0
+    fi
+
+    (cd "$dir" && makepkg -si --needed --noconfirm 2>&1) || true
+    ok "[installed] $pkg"
+}
+
+do_install() {
+    [ -z "$AUR_LIST" ] && { warn "no AUR packages to install"; return 0; } || true
+    info "resolving dependencies..."
+    order=""
+    for pkg in $AUR_LIST; do
+        clone_or_pull "$pkg"
+        resolved=$(resolve_deps "$pkg" " $AUR_LIST " "")
+        order="$order $resolved"
+    done
+    # Deduplicate while preserving topological order
+    order=$(echo "$order" | tr ' ' '\n' | sed '/^$/d' | awk '!seen[$0]++' | tr '\n' ' ')
+
+    [ -z "$order" ] && { ok "all AUR packages up to date"; return 0; } || true
+
+    info "build order:$order"
+    for pkg in $order; do
+        clone_or_pull "$pkg"
+        check_and_install "$pkg" || true
+    done
+}
+
+do_update() {
+    [ -z "$AUR_LIST" ] && { warn "no AUR packages to update"; return 0; } || true
+    changed=0
+    for pkg in $AUR_LIST; do
+        clone_or_pull "$pkg"
+
+        if ! needs_update "$pkg"; then
+            ok "$pkg: up to date"
+            continue
+        fi
+
+        check_and_install "$pkg" || true
+        changed=1
+    done
+    [ "$changed" = "0" ] && ok "all AUR packages up to date" || true
+}
+
+usage() {
+    echo "usage: $(basename "$0") [-d] [-f] [-p packages] <install|update>"
+    echo "  -d            dry run"
+    echo "  -f            force rebuild"
+    echo "  -p packages   space-separated AUR package list"
+    exit 1
+}
+
+while getopts "dfp:" opt; do
+    case "$opt" in
+        d) DRY=1 ;;
+        f) FORCE=1 ;;
+        p) AUR_LIST="$OPTARG" ;;
+        *) usage ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+[ -z "$1" ] && usage
+ACTION="$1"
+mkdir -p "$CACHE_DIR"
+
+case "$ACTION" in
+    install) do_install ;;
+    update) do_update ;;
+    *) usage ;;
+esac

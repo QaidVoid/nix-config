@@ -1,0 +1,15 @@
+base
+base-devel
+btrfs-progs
+cryptsetup
+efibootmgr
+elogind-s6
+iwd
+iwd-s6
+limine
+linux
+linux-firmware
+linux-headers
+openresolv
+openssh
+s6-base

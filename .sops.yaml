@@ -1,7 +1,0 @@
-keys:
-  - &quentlix age1d3ft62zhz02tu6hyt3304k7uaf0juth4wprdays3k0k5dc09wd9qfjy0xt
-creation_rules:
-  - path_regex: hosts/quentlix/secrets.yaml$
-    key_groups:
-    - age:
-        - *quentlix
