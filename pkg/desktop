@@ -1,5 +1,7 @@
 bat
 btop
+clang
+deno
 discord
 distrobox
 eza
@@ -17,6 +19,8 @@ less
 libnotify
 mandoc
 mise
+mold
+mpv
 neovim
 noto-fonts
 noto-fonts-cjk
@@ -48,4 +52,5 @@ xdg-desktop-portal-gtk
 xdg-desktop-portal-wlr
 xdg-utils
 xwayland-satellite
+yt-dlp
 zoxide

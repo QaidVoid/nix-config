@@ -115,7 +115,8 @@ is_version_only_change() {
 
 # Build and install a package with security checks:
 #   - If cached PKGBUILD exists, diff it against the new one
-#   - If diff contains non-version changes, require explicit approval
+#     - If diff contains non-version changes, require explicit approval
+#   - If no cached PKGBUILD (first install), show it and require approval
 #   - Cache the PKGBUILD after approval for future comparisons
 check_and_install() {
     pkg="$1"
@@ -137,7 +138,14 @@ check_and_install() {
     elif [ -f "$cached" ]; then
         ok "[safe] $pkg: only version/checksum changes"
     else
-        info "[new] $pkg: first install, caching PKGBUILD"
+        printf "\n${BOLD}${YELLOW}[review] %s: first install${RESET}\n" "$pkg"
+        sed 's/^/  │ /' "$pkgbuild"
+        printf "\n  ${YELLOW}Approve this PKGBUILD? [y/N]${RESET} "
+        read -r answer
+        case "$answer" in
+            [yY]*) ;;
+            *) warn "skipping $pkg"; return 1 ;;
+        esac
     fi
 
     cp "$pkgbuild" "$cached"
