@@ -1,4 +1,8 @@
+7zip
 bat
+bluetui
+bluez
+bluez-s6
 btop
 clang
 deno
@@ -12,6 +16,8 @@ fish
 git
 git-cliff
 git-delta
+github-cli
+jq
 jujutsu
 just
 keepassxc
@@ -21,6 +27,7 @@ mandoc
 mise
 mold
 mpv
+musl
 neovim
 noto-fonts
 noto-fonts-cjk
@@ -33,7 +40,9 @@ pipewire-pulse
 podman
 podman-compose
 podman-docker
+qbittorrent
 qt5-wayland
+rtkit
 rofi
 starship
 swaybg

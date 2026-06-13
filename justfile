@@ -3,7 +3,7 @@ FORCE := "0"
 DRY := "0"
 YES  := "0"
 
-SERVICES := "iwd dbus user-services"
+SERVICES := "iwd dbus bluetoothd"
 
 HDR := '\033[1;36m'
 OK  := '\033[0;32m'
@@ -101,9 +101,11 @@ system:
         sudo cp -rf "{{ REPO }}/etc/$file" "$dest"
         printf "    {{ OK }}deploy  {{ B }}/etc/%s{{ RST }}\n" "$file"
     done
+    s6_changed=0
     for item in adminsv config; do
         src="{{ REPO }}/etc/s6/$item"
         dest="/etc/s6/$item"
+        [ -d "$src" ] && [ -n "$(ls -A "$src" 2>/dev/null)" ] || continue
         if [ "{{ FORCE }}" = "0" ] && [ -d "$dest" ] && diff -rq "$src" "$dest" >/dev/null 2>&1; then
             printf "    {{ OK }}skip    {{ DIM }}/etc/s6/%s{{ RST }}\n" "$item"
             continue
@@ -113,9 +115,11 @@ system:
             continue
         fi
         sudo cp -rf "$src"/* "$dest"/
+        sudo find "$dest" -type f \( -name run -o -name up -o -name down \) -exec chmod 755 {} +
         printf "    {{ OK }}deploy  {{ B }}/etc/s6/%s{{ RST }}\n" "$item"
+        s6_changed=1
     done
-    if [ "{{ DRY }}" != "1" ]; then
+    if [ "$s6_changed" = "1" ] && [ "{{ DRY }}" != "1" ]; then
         sudo s6 repository sync >/dev/null 2>&1 || true
         sudo s6 set commit >/dev/null 2>&1 || true
         sudo s6 live install >/dev/null 2>&1 || true
@@ -152,13 +156,19 @@ user-services:
         s6-db-reload -u >/dev/null 2>&1 || true
     fi
     printf "    {{ OK }}reload  {{ DIM }}database{{ RST }}\n"
-    if [ -d "/run/$USER/s6-rc" ]; then
+    # Deploy start-session script
+    if [ -f "{{ REPO }}/home/s6/start-session" ]; then
+        cp -rf "{{ REPO }}/home/s6/start-session" "$dest/start-session"
+        chmod +x "$dest/start-session"
+        printf "    {{ OK }}deploy  {{ B }}start-session{{ RST }}\n"
+    fi
+    if [ -n "${XDG_RUNTIME_DIR:-}" ] && [ -d "${XDG_RUNTIME_DIR}/s6-rc" ]; then
         if [ "{{ DRY }}" = "1" ]; then
             for name in $(ls -1 "{{ REPO }}/home/s6/sv/" 2>/dev/null | grep -v '^default$'); do
                 printf "    {{ DRF }}start   {{ DIM }}%s{{ RST }}\n" "$name"
             done
         else
-            s6-rc -l /run/$USER/s6-rc -up change default 2>/dev/null || true
+            s6-rc -l "${XDG_RUNTIME_DIR}/s6-rc" -up change default 2>/dev/null || true
             for name in $(ls -1 "{{ REPO }}/home/s6/sv/" 2>/dev/null | grep -v '^default$'); do
                 printf "    {{ OK }}start   {{ B }}%s{{ RST }}\n" "$name"
             done
@@ -249,22 +259,17 @@ services:
     enabled=""
     for svc in {{ SERVICES }}; do
         found=1
-        case "$svc" in
-            user-services)
-                [ -d "/etc/s6/adminsv/$svc" ] || continue
-                if s6-rc-db -c /etc/s6/rc/compiled contents default 2>/dev/null | grep -q "^${svc}$"; then
-                    printf "    {{ OK }}skip    {{ DIM }}%s{{ RST }}\n" "$svc"
-                    continue
-                fi
-                ;;
-            *)
-                [ -d "/etc/s6/sv/${svc}-srv" ] || continue
-                if s6-rc-db -c /etc/s6/rc/compiled contents default 2>/dev/null | grep -q "^${svc}-srv$"; then
-                    printf "    {{ OK }}skip    {{ DIM }}%s{{ RST }}\n" "$svc"
-                    continue
-                fi
-                ;;
-        esac
+        if [ -d "/etc/s6/adminsv/$svc" ]; then
+            name="$svc"
+        elif [ -d "/etc/s6/sv/${svc}-srv" ]; then
+            name="${svc}-srv"
+        else
+            continue
+        fi
+        if s6-rc-db -c /etc/s6/rc/compiled contents default 2>/dev/null | grep -q "^${name}$"; then
+            printf "    {{ OK }}skip    {{ DIM }}%s{{ RST }}\n" "$svc"
+            continue
+        fi
         changed=1
         if [ "{{ DRY }}" = "1" ]; then
             printf "    {{ DRF }}dry     {{ DIM }}%s{{ RST }}\n" "$svc"

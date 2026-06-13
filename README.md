@@ -12,7 +12,7 @@ Dotfiles and system configuration for an Artix Linux (s6) setup, managed with [j
 ├── home/
 │   ├── config/           # ~/.config/* (file-level, e.g. fish/config.fish)
 │   └── s6/sv/            # user-level s6 services (pipewire, wireplumber, ...)
-├── etc/                  # /etc/* (fstab, hostname, s6 adminsv, ...)
+├── etc/                  # /etc/* (fstab, hostname, ...)
 └── pkg/                  # package lists
     ├── base              # kernel, boot, networking, disk
     ├── desktop           # gui, audio, cli, apps
@@ -102,19 +102,19 @@ The `scripts/aur` script provides:
 
 ## s6 user services
 
-User services (pipewire, wireplumber, etc.) run under a supervised s6-rc instance:
+User services (pipewire, wireplumber, etc.) run under a user-managed s6-rc instance -- no system services or root required:
 
-1. `just system` deploys adminsv entries and syncs the system database
-2. `just services` enables the `user-services` system bundle and starts it
-3. `just user-services` deploys user service files and compiles the user database
+1. `just user-services` deploys service files to `~/.local/share/s6/sv/` and compiles the user database
+2. `just user` deploys the fish autostart snippet (`~/.config/fish/conf.d/s6.fish`)
+3. On login, fish backgrounds `start-session`, which starts `s6-svscan`, runs `s6-rc-init`, and brings up the `default` bundle
 
-The system `user-services` bundle starts `s6-svscan` as your user, which supervises all user-level services. These auto-start on boot.
+The session is fully user-owned: `s6-svscan` runs as your user, services start after login (not boot), and stop when you log out.
 
 Manage user services:
 
 ```bash
-s6-rc -l /run/$USER/s6-rc -u change pipewire      # start
-s6-rc -l /run/$USER/s6-rc -d change pipewire      # stop
-s6-rc -l /run/$USER/s6-rc -up change default      # start all
-s6-rc -l /run/$USER/s6-rc -d change default       # stop all
+s6-rc -l $XDG_RUNTIME_DIR/s6-rc -u change pipewire      # start
+s6-rc -l $XDG_RUNTIME_DIR/s6-rc -d change pipewire      # stop
+s6-rc -l $XDG_RUNTIME_DIR/s6-rc -up change default      # start all
+s6-rc -l $XDG_RUNTIME_DIR/s6-rc -d change default       # stop all
 ```
